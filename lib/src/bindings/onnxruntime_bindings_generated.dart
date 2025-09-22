@@ -40,6 +40,10 @@ class OnnxRuntimeBindings {
   late final _OrtGetApiBase =
       _OrtGetApiBasePtr.asFunction<ffi.Pointer<OrtApiBase> Function()>();
 
+  /// This is the old way to add the CUDA provider to the session, please use SessionOptionsAppendExecutionProvider_CUDA above to access the latest functionality
+  /// This function always exists, but will only succeed if Onnxruntime was built with CUDA support and the CUDA provider shared library exists
+  ///
+  /// \param device_id CUDA device id, starts from zero.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_CUDA(
     ffi.Pointer<OrtSessionOptions> options,
     int device_id,
@@ -58,6 +62,12 @@ class OnnxRuntimeBindings {
       _OrtSessionOptionsAppendExecutionProvider_CUDAPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
 
+  /// This is the old way to add the ROCm provider to the session, please use
+  /// SessionOptionsAppendExecutionProvider_ROCM above to access the latest functionality
+  /// This function always exists, but will only succeed if Onnxruntime was built with
+  /// HIP support and the ROCm provider shared library exists
+  ///
+  /// \param device_id HIP device id, starts from zero.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_ROCM(
     ffi.Pointer<OrtSessionOptions> options,
     int device_id,
@@ -76,6 +86,12 @@ class OnnxRuntimeBindings {
       _OrtSessionOptionsAppendExecutionProvider_ROCMPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
 
+  /// This is the old way to add the MIGraphX provider to the session, please use
+  /// SessionOptionsAppendExecutionProvider_MIGraphX above to access the latest functionality
+  /// This function always exists, but will only succeed if Onnxruntime was built with
+  /// HIP support and the MIGraphX provider shared library exists
+  ///
+  /// \param device_id HIP device id, starts from zero.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_MIGraphX(
     ffi.Pointer<OrtSessionOptions> options,
     int device_id,
@@ -94,6 +110,12 @@ class OnnxRuntimeBindings {
       _OrtSessionOptionsAppendExecutionProvider_MIGraphXPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
 
+  /// This is the old way to add the oneDNN provider to the session, please use
+  /// SessionOptionsAppendExecutionProvider_oneDNN above to access the latest functionality
+  /// This function always exists, but will only succeed if Onnxruntime was built with
+  /// oneDNN support and the oneDNN provider shared library exists
+  ///
+  /// \param use_arena zero: false. non-zero: true.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_Dnnl(
     ffi.Pointer<OrtSessionOptions> options,
     int use_arena,
@@ -112,6 +134,10 @@ class OnnxRuntimeBindings {
       _OrtSessionOptionsAppendExecutionProvider_DnnlPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
 
+  /// This is the old way to add the TensorRT provider to the session, please use SessionOptionsAppendExecutionProvider_TensorRT_V2 above to access the latest functionality
+  /// This function always exists, but will only succeed if Onnxruntime was built with TensorRT support and the TensorRT provider shared library exists
+  ///
+  /// \param device_id CUDA device id, starts from zero.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_Tensorrt(
     ffi.Pointer<OrtSessionOptions> options,
     int device_id,
@@ -129,6 +155,124 @@ class OnnxRuntimeBindings {
   late final _OrtSessionOptionsAppendExecutionProvider_Tensorrt =
       _OrtSessionOptionsAppendExecutionProvider_TensorrtPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
+
+  /// MLComputeUnits can be one of the following values:
+  /// 'MLComputeUnitsCPUAndNeuralEngine|MLComputeUnitsCPUAndGPU|MLComputeUnitsCPUOnly|MLComputeUnitsAll'
+  /// these values are intended to be used with Ort::SessionOptions::AppendExecutionProvider (C++ API)
+  /// and SessionOptionsAppendExecutionProvider (C API). For the old API, use COREMLFlags instead.
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_MLComputeUnits =
+      _lookup<ffi.Pointer<ffi.Char>>('kCoremlProviderOption_MLComputeUnits');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_MLComputeUnits =>
+      _kCoremlProviderOption_MLComputeUnits.value;
+
+  set kCoremlProviderOption_MLComputeUnits(ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_MLComputeUnits.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_ModelFormat =
+      _lookup<ffi.Pointer<ffi.Char>>('kCoremlProviderOption_ModelFormat');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_ModelFormat =>
+      _kCoremlProviderOption_ModelFormat.value;
+
+  set kCoremlProviderOption_ModelFormat(ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_ModelFormat.value = value;
+
+  /// same as COREML_FLAG_ONLY_ALLOW_STATIC_INPUT_SHAPES
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_RequireStaticInputShapes =
+      _lookup<ffi.Pointer<ffi.Char>>(
+          'kCoremlProviderOption_RequireStaticInputShapes');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_RequireStaticInputShapes =>
+      _kCoremlProviderOption_RequireStaticInputShapes.value;
+
+  set kCoremlProviderOption_RequireStaticInputShapes(
+          ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_RequireStaticInputShapes.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_EnableOnSubgraphs =
+      _lookup<ffi.Pointer<ffi.Char>>('kCoremlProviderOption_EnableOnSubgraphs');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_EnableOnSubgraphs =>
+      _kCoremlProviderOption_EnableOnSubgraphs.value;
+
+  set kCoremlProviderOption_EnableOnSubgraphs(ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_EnableOnSubgraphs.value = value;
+
+  /// provided by https://developer.apple.com/documentation/coreml/mloptimizationhints-swift.struct/specializationstrategy-swift.property
+  /// Core ML segments the model’s compute graph and specializes each segment for the target compute device.
+  /// This process can affect the model loading time and the prediction latency.
+  /// Use this option to tailor the specialization strategy for your model.
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_SpecializationStrategy =
+      _lookup<ffi.Pointer<ffi.Char>>(
+          'kCoremlProviderOption_SpecializationStrategy');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_SpecializationStrategy =>
+      _kCoremlProviderOption_SpecializationStrategy.value;
+
+  set kCoremlProviderOption_SpecializationStrategy(
+          ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_SpecializationStrategy.value = value;
+
+  /// Profile the Core ML MLComputePlan.
+  /// This logs the hardware each operator is dispatched to and the estimated execution time.
+  /// Intended for developer usage but provide useful diagnostic information if performance is not as expected.
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_ProfileComputePlan =
+      _lookup<ffi.Pointer<ffi.Char>>(
+          'kCoremlProviderOption_ProfileComputePlan');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_ProfileComputePlan =>
+      _kCoremlProviderOption_ProfileComputePlan.value;
+
+  set kCoremlProviderOption_ProfileComputePlan(ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_ProfileComputePlan.value = value;
+
+  /// please refer to https://developer.apple.com/documentation/coreml/mlmodelconfiguration/allowlowprecisionaccumulationongpu
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU =
+      _lookup<ffi.Pointer<ffi.Char>>(
+          'kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU');
+
+  ffi.Pointer<ffi.Char>
+      get kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU =>
+          _kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU.value;
+
+  set kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU(
+          ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_AllowLowPrecisionAccumulationOnGPU.value = value;
+
+  /// we do NOT detect if the onnx model has changed and no longer matches the cached model.
+  /// the user should carefully manage the cache if modifying/replacing a model.
+  /// The cache key is generated by
+  /// 1. User provided key in metadata_props if found (preferred)
+  /// 2. Hash of the model url the inference session was created with
+  /// 3. Hash of the input/output names of the model
+  /// Please find out how to set metadata_props in the onnxruntime API documentation. https://onnxruntime.ai/docs/execution-providers/CoreML-ExecutionProvider.html#configuration-options
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _kCoremlProviderOption_ModelCacheDirectory =
+      _lookup<ffi.Pointer<ffi.Char>>(
+          'kCoremlProviderOption_ModelCacheDirectory');
+
+  ffi.Pointer<ffi.Char> get kCoremlProviderOption_ModelCacheDirectory =>
+      _kCoremlProviderOption_ModelCacheDirectory.value;
+
+  set kCoremlProviderOption_ModelCacheDirectory(ffi.Pointer<ffi.Char> value) =>
+      _kCoremlProviderOption_ModelCacheDirectory.value = value;
+
+  /// User provided cache-key in metadata_props.
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _kCOREML_CACHE_KEY =
+      _lookup<ffi.Pointer<ffi.Char>>('kCOREML_CACHE_KEY');
+
+  ffi.Pointer<ffi.Char> get kCOREML_CACHE_KEY => _kCOREML_CACHE_KEY.value;
+
+  set kCOREML_CACHE_KEY(ffi.Pointer<ffi.Char> value) =>
+      _kCOREML_CACHE_KEY.value = value;
 
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_CoreML(
     ffi.Pointer<OrtSessionOptions> options,
@@ -148,6 +292,7 @@ class OnnxRuntimeBindings {
       _OrtSessionOptionsAppendExecutionProvider_CoreMLPtr.asFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions>, int)>();
 
+  /// \param use_arena zero: false. non-zero: true.
   OrtStatusPtr OrtSessionOptionsAppendExecutionProvider_CPU(
     ffi.Pointer<OrtSessionOptions> options,
     int use_arena,
@@ -321,6 +466,8 @@ abstract class OrtErrorCode {
   static const int ORT_NOT_IMPLEMENTED = 9;
   static const int ORT_INVALID_GRAPH = 10;
   static const int ORT_EP_FAIL = 11;
+  static const int ORT_MODEL_LOAD_CANCELED = 12;
+  static const int ORT_MODEL_REQUIRES_COMPILATION = 13;
 }
 
 abstract class OrtOpAttrType {
@@ -333,6 +480,11 @@ abstract class OrtOpAttrType {
   static const int ORT_OP_ATTR_STRINGS = 6;
 }
 
+/// \addtogroup Global
+/// ONNX Runtime C API
+/// @{
+/// /
+/// // The actual types defined have an Ort prefix
 class OrtEnv extends ffi.Opaque {}
 
 class OrtStatus extends ffi.Opaque {}
@@ -373,6 +525,8 @@ class OrtPrepackedWeightsContainer extends ffi.Opaque {}
 
 class OrtTensorRTProviderOptionsV2 extends ffi.Opaque {}
 
+class OrtNvTensorRtRtxProviderOptions extends ffi.Opaque {}
+
 class OrtCUDAProviderOptionsV2 extends ffi.Opaque {}
 
 class OrtCANNProviderOptions extends ffi.Opaque {}
@@ -386,6 +540,24 @@ class OrtOpAttr extends ffi.Opaque {}
 class OrtLogger extends ffi.Opaque {}
 
 class OrtShapeInferContext extends ffi.Opaque {}
+
+class OrtLoraAdapter extends ffi.Opaque {}
+
+class OrtValueInfo extends ffi.Opaque {}
+
+class OrtNode extends ffi.Opaque {}
+
+class OrtGraph extends ffi.Opaque {}
+
+class OrtModel extends ffi.Opaque {}
+
+class OrtModelCompilationOptions extends ffi.Opaque {}
+
+class OrtHardwareDevice extends ffi.Opaque {}
+
+class OrtEpDevice extends ffi.Opaque {}
+
+class OrtKeyValuePairs extends ffi.Opaque {}
 
 /// \brief Memory allocation interface
 ///
@@ -655,6 +827,15 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> Function(ffi.Pointer<OrtStatus> status)>>
       GetErrorMessage;
 
+  /// \brief Create an OrtEnv
+  ///
+  /// \note Invoking this function will return the same instance of the environment as that returned by a previous call
+  /// to another env creation function; all arguments to this function will be ignored.
+  /// \param[in] log_severity_level The log severity level.
+  /// \param[in] logid The log identifier.
+  /// \param[out] out Returned newly created OrtEnv. Must be freed with OrtApi::ReleaseEnv
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -662,6 +843,19 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> logid,
               ffi.Pointer<ffi.Pointer<OrtEnv>> out)>> CreateEnv;
 
+  /// \brief Create an OrtEnv
+  ///
+  /// \note Invoking this function will return the same instance of the environment as that returned by a previous call
+  /// to another env creation function; all arguments to this function will be ignored. If you want to provide your
+  /// own logging function, consider setting it using the SetUserLoggingFunction API instead.
+  /// \param[in] logging_function A pointer to a logging function.
+  /// \param[in] logger_param A pointer to arbitrary data passed as the ::OrtLoggingFunction `param` parameter to
+  /// `logging_function`. This parameter is optional.
+  /// \param[in] log_severity_level The log severity level.
+  /// \param[in] logid The log identifier.
+  /// \param[out] out Returned newly created OrtEnv. Must be freed with OrtApi::ReleaseEnv
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -671,14 +865,40 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> logid,
               ffi.Pointer<ffi.Pointer<OrtEnv>> out)>> CreateEnvWithCustomLogger;
 
+  /// \brief Enable Telemetry
+  ///
+  /// \note Telemetry events are on by default since they are lightweight
+  /// \param[in] env
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<OrtStatusPtr Function(ffi.Pointer<OrtEnv> env)>>
       EnableTelemetryEvents;
 
+  /// \brief Disable Telemetry
+  ///
+  /// \see OrtApi::EnableTelemetryEvents
+  /// \param[in] env
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<OrtStatusPtr Function(ffi.Pointer<OrtEnv> env)>>
       DisableTelemetryEvents;
 
+  /// \brief Create an OrtSession from a model file
+  ///
+  /// \param[in] env
+  /// \param[in] model_path
+  /// \param[in] options
+  /// \param[out] out Returned newly created OrtSession. Must be freed with OrtApi::ReleaseSession
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// /
+  /// // TODO: document the path separator convention? '/' vs '\'
+  /// // TODO: should specify the access characteristics of model_path. Is this read only during the
+  /// // execution of CreateSession, or does the OrtSession retain a handle to the file/directory
+  /// // and continue to access throughout the OrtSession lifetime?
+  /// //  What sort of access is needed to model_path : read or read/write?
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -687,6 +907,15 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtSessionOptions> options,
               ffi.Pointer<ffi.Pointer<OrtSession>> out)>> CreateSession;
 
+  /// \brief Create an OrtSession from memory
+  ///
+  /// \param[in] env
+  /// \param[in] model_data
+  /// \param[in] model_data_length
+  /// \param[in] options
+  /// \param[out] out Returned newly created OrtSession. Must be freed with OrtApi::ReleaseSession
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -697,6 +926,23 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
       CreateSessionFromArray;
 
+  /// \brief Run the model in an ::OrtSession
+  ///
+  /// Will not return until the model run has completed. Multiple threads might be used to run the model based on
+  /// the options in the ::OrtSession and settings used when creating the ::OrtEnv
+  ///
+  /// \param[in] session
+  /// \param[in] run_options If nullptr, will use a default ::OrtRunOptions
+  /// \param[in] input_names Array of null terminated UTF8 encoded strings of the input names
+  /// \param[in] inputs Array of ::OrtValue%s of the input values
+  /// \param[in] input_len Number of elements in the input_names and inputs arrays
+  /// \param[in] output_names Array of null terminated UTF8 encoded strings of the output names
+  /// \param[in] output_names_len Number of elements in the output_names and outputs array
+  /// \param[out] outputs Array of ::OrtValue%s that the outputs are stored in. This can also be
+  /// an array of nullptr values, in this case ::OrtValue objects will be allocated and pointers
+  /// to them will be set into the `outputs` array.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -709,108 +955,273 @@ class OrtApi extends ffi.Struct {
               ffi.Size output_names_len,
               ffi.Pointer<ffi.Pointer<OrtValue>> outputs)>> Run;
 
+  /// \brief Create an ::OrtSessionOptions object
+  ///
+  /// To use additional providers, you must build ORT with the extra providers enabled. Then call one of these
+  /// functions to enable them in the session:<br>
+  /// OrtSessionOptionsAppendExecutionProvider_CPU<br>
+  /// OrtSessionOptionsAppendExecutionProvider_CUDA<br>
+  /// OrtSessionOptionsAppendExecutionProvider_(remaining providers...)<br>
+  /// The order they are called indicates the preference order as well. In other words call this method
+  /// on your most preferred execution provider first followed by the less preferred ones.
+  /// If none are called Ort will use its internal CPU execution provider.
+  ///
+  /// \param[out] options The newly created OrtSessionOptions. Must be freed with OrtApi::ReleaseSessionOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtSessionOptions>> options)>>
       CreateSessionOptions;
 
+  /// \brief Set filepath to save optimized model after graph level transformations
+  ///
+  /// \param[in] options
+  /// \param[in] optimized_model_filepath
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<ffi.Char> optimized_model_filepath)>>
       SetOptimizedModelFilePath;
 
+  /// \brief Create a copy of an existing ::OrtSessionOptions
+  ///
+  /// \param[in] in_options OrtSessionOptions to copy
+  /// \param[out] out_options Returned newly created ::OrtSessionOptions. Must be freed with OrtApi::ReleaseSessionOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> in_options,
                   ffi.Pointer<ffi.Pointer<OrtSessionOptions>> out_options)>>
       CloneSessionOptions;
 
+  /// \brief Set execution mode
+  ///
+  /// Controls whether you want to execute operators in your graph sequentially or in parallel. Usually when the model
+  /// has many branches, setting this option to ExecutionMode.ORT_PARALLEL will give you better performance.
+  /// See [docs/ONNX_Runtime_Perf_Tuning.md] for more details.
+  ///
+  /// \param[in] options
+  /// \param[in] execution_mode
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Int32 execution_mode)>> SetSessionExecutionMode;
 
+  /// \brief Enable profiling for a session
+  ///
+  /// \param[in] options
+  /// \param[in] profile_file_prefix
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Pointer<ffi.Char> profile_file_prefix)>> EnableProfiling;
 
+  /// \brief Disable profiling for a session
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       DisableProfiling;
 
+  /// \brief Enable the memory pattern optimization
+  ///
+  /// The idea is if the input shapes are the same, we could trace the internal memory allocation
+  /// and generate a memory pattern for future request. So next time we could just do one allocation
+  /// with a big chunk for all the internal memory allocation.
+  /// \note Memory pattern optimization is only available when Sequential Execution mode is enabled (see OrtApi::SetSessionExecutionMode)
+  ///
+  /// \see OrtApi::DisableMemPattern
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       EnableMemPattern;
 
+  /// \brief Disable the memory pattern optimization
+  ///
+  /// \see OrtApi::EnableMemPattern
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       DisableMemPattern;
 
+  /// \brief Enable the memory arena on CPU
+  ///
+  /// Arena may pre-allocate memory for future usage.
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       EnableCpuMemArena;
 
+  /// \brief Disable the memory arena on CPU
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       DisableCpuMemArena;
 
+  /// \brief Set session log id
+  ///
+  /// \param[in] options
+  /// \param[in] logid The log identifier.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Pointer<ffi.Char> logid)>> SetSessionLogId;
 
+  /// \brief Set session log verbosity level
+  ///
+  /// Applies to session load, initialization, etc
+  ///
+  /// \param[in] options
+  /// \param[in] session_log_verbosity_level \snippet{doc} snippets.dox Log Verbosity Level
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Int session_log_verbosity_level)>>
       SetSessionLogVerbosityLevel;
 
+  /// \brief Set session log severity level
+  ///
+  /// \param[in] options
+  /// \param[in] session_log_severity_level The log severity level (refer to ::OrtLoggingLevel for possible values).
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Int session_log_severity_level)>> SetSessionLogSeverityLevel;
 
+  /// \brief Set the optimization level to apply when loading a graph
+  ///
+  /// Please see https://onnxruntime.ai/docs/performance/model-optimizations/graph-optimizations.html for an in-depth explanation
+  /// \param[in,out] options The session options object
+  /// \param[in] graph_optimization_level The optimization level
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Int32 graph_optimization_level)>>
       SetSessionGraphOptimizationLevel;
 
+  /// \brief Sets the number of threads used to parallelize the execution within nodes
+  ///
+  /// When running a single node operation, ex. add, this sets the maximum number of threads to use.
+  ///
+  /// \note If built with OpenMP, this has no effect on the number of threads used. In this case
+  /// use the OpenMP env variables to configure the number of intra op num threads.
+  ///
+  /// \param[in] options
+  /// \param[in] intra_op_num_threads Number of threads to use<br>
+  /// A value of 0 will use the default number of threads<br>
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Int intra_op_num_threads)>> SetIntraOpNumThreads;
 
+  /// \brief Sets the number of threads used to parallelize the execution of the graph
+  ///
+  /// If nodes can be run in parallel, this sets the maximum number of threads to use to run them in parallel.
+  ///
+  /// \note If sequential execution is enabled this value is ignored, it acts as if it was set to 1.
+  ///
+  /// \param[in] options
+  /// \param[in] inter_op_num_threads Number of threads to use<br>
+  /// A value of 0 will use the default number of threads<br>
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Int inter_op_num_threads)>> SetInterOpNumThreads;
 
+  /// \brief Create a custom op domain
+  ///
+  /// \param[in] domain
+  /// \param[out] out Newly created domain. Must be freed with OrtApi::ReleaseCustomOpDomain
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<ffi.Char> domain,
                   ffi.Pointer<ffi.Pointer<OrtCustomOpDomain>> out)>>
       CreateCustomOpDomain;
 
+  /// \brief Add a custom op to a custom op domain
+  ///
+  /// \note The OrtCustomOp* pointer must remain valid until the ::OrtCustomOpDomain using it is released
+  ///
+  /// \param[in] custom_op_domain
+  /// \param[in] op
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtCustomOpDomain> custom_op_domain,
               ffi.Pointer<OrtCustomOp> op)>> CustomOpDomain_Add;
 
+  /// \brief Add custom op domain to a session options
+  ///
+  /// \note The OrtCustomOpDomain* must not be deleted until all sessions using it are released
+  ///
+  /// \param[in] options
+  /// \param[in] custom_op_domain
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtCustomOpDomain> custom_op_domain)>>
       AddCustomOpDomain;
 
+  /// \deprecated Use OrtApi::RegisterCustomOpsLibrary_V2.
+  ///
+  /// Registers custom ops from a shared library.
+  ///
+  /// Loads a shared library (dll on windows, so on linux, etc) named 'library_path' and looks for this entry point:
+  /// OrtStatus* RegisterCustomOps(OrtSessionOptions * options, const OrtApiBase* api);
+  /// It then passes in the provided session options to this function along with the api base.
+  /// The handle to the loaded library is returned in library_handle. It can be freed by the caller after all sessions using the passed in
+  /// session options are destroyed, or if an error occurs and it is non null.
+  ///
+  /// \param[in] options
+  /// \param[in] library_path
+  /// \param[out] library_handle OS specific handle to the loaded library (Use FreeLibrary on Windows, dlclose on Linux, etc.. to unload)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -819,24 +1230,59 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> library_handle)>>
       RegisterCustomOpsLibrary;
 
+  /// \brief Get input count for a session
+  ///
+  /// This number must also match the number of inputs passed to OrtApi::Run
+  ///
+  /// \see OrtApi::SessionGetInputTypeInfo, OrtApi::SessionGetInputName, OrtApi::Session
+  ///
+  /// \param[in] session
+  /// \param[out] out Number of inputs
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtSession> session, ffi.Pointer<ffi.Size> out)>>
       SessionGetInputCount;
 
+  /// \brief Get output count for a session
+  ///
+  /// This number must also match the number of outputs returned by OrtApi::Run
+  ///
+  /// \see OrtApi::SessionGetOutputTypeInfo, OrtApi::SessionGetOutputName, OrtApi::Session
+  ///
+  /// \param[in] session
+  /// \param[out] out Number of outputs
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtSession> session, ffi.Pointer<ffi.Size> out)>>
       SessionGetOutputCount;
 
+  /// \brief Get overridable initializer count
+  ///
+  /// \see OrtApi::SessionGetOverridableInitializerTypeInfo, OrtApi::SessionGetOverridableInitializerName
+  ///
+  /// \param[in] session
+  /// \param[in] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtSession> session, ffi.Pointer<ffi.Size> out)>>
       SessionGetOverridableInitializerCount;
 
+  /// \brief Get input type information
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetInputCount returns (exclusive)
+  /// \param[out] type_info Must be freed with OrtApi::ReleaseTypeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -845,6 +1291,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       SessionGetInputTypeInfo;
 
+  /// \brief Get output type information
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetOutputCount returns (exclusive)
+  /// \param[out] type_info Must be freed with OrtApi::ReleaseTypeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -853,6 +1306,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       SessionGetOutputTypeInfo;
 
+  /// \brief Get overridable initializer type information
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetOverridableInitializerCount returns (exclusive)
+  /// \param[out] type_info Must be freed with OrtApi::ReleaseTypeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -861,6 +1321,14 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       SessionGetOverridableInitializerTypeInfo;
 
+  /// \brief Get input name
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetInputCount returns (exclusive)
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated UTF-8 encoded string allocated using `allocator`. Must be freed using `allocator`.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -869,6 +1337,14 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtAllocator> allocator,
               ffi.Pointer<ffi.Pointer<ffi.Char>> value)>> SessionGetInputName;
 
+  /// \brief Get output name
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetOutputCount returns (exclusive)
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated UTF-8 encoded string allocated using `allocator`. Must be freed using `allocator`.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -877,6 +1353,14 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtAllocator> allocator,
               ffi.Pointer<ffi.Pointer<ffi.Char>> value)>> SessionGetOutputName;
 
+  /// \brief Get overridable initializer name
+  ///
+  /// \param[in] session
+  /// \param[in] index Must be between 0 (inclusive) and what OrtApi::SessionGetOverridableInitializerCount returns (exclusive)
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated UTF-8 encoded string allocated using `allocator`. Must be freed using `allocator`.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -886,53 +1370,129 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       SessionGetOverridableInitializerName;
 
+  /// \brief Create an OrtRunOptions
+  ///
+  /// \param[out] out Returned newly created ::OrtRunOptions. Must be freed with OrtApi::ReleaseRunOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
               ffi.Pointer<ffi.Pointer<OrtRunOptions>> out)>> CreateRunOptions;
 
+  /// \brief Set per-run log verbosity level
+  ///
+  /// \see OrtApi::RunOptionsGetRunLogVerbosityLevel
+  ///
+  /// \param[in] options
+  /// \param[in] log_verbosity_level \snippet{doc} snippets.dox Log Verbosity Level
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
               ffi.Int log_verbosity_level)>> RunOptionsSetRunLogVerbosityLevel;
 
+  /// \brief Set per-run log severity level
+  ///
+  /// \see OrtApi::RunOptionsGetRunLogSeverityLevel
+  ///
+  /// \param[in] options
+  /// \param[in] log_severity_level The log severity level (refer to ::OrtLoggingLevel for possible values).
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
               ffi.Int log_severity_level)>> RunOptionsSetRunLogSeverityLevel;
 
+  /// \brief Set per-run tag
+  ///
+  /// This is used in a per-run log identifier.
+  ///
+  /// \see OrtApi::RunOptionsGetRunTag
+  ///
+  /// \param[in] options
+  /// \param[in] run_tag The run tag.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
               ffi.Pointer<ffi.Char> run_tag)>> RunOptionsSetRunTag;
 
+  /// \brief Get per-run log verbosity level
+  ///
+  /// \see OrtApi::RunOptionsSetRunLogVerbosityLevel
+  ///
+  /// \param[in] options
+  /// \param[out] log_verbosity_level \snippet{doc} snippets.dox Log Verbosity Level
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
                   ffi.Pointer<ffi.Int> log_verbosity_level)>>
       RunOptionsGetRunLogVerbosityLevel;
 
+  /// \brief Get per-run log severity level
+  ///
+  /// \see OrtApi::RunOptionsSetRunLogSeverityLevel
+  ///
+  /// \param[in] options
+  /// \param[out] log_severity_level The log severity level (refer to ::OrtLoggingLevel for possible values).
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
                   ffi.Pointer<ffi.Int> log_severity_level)>>
       RunOptionsGetRunLogSeverityLevel;
 
+  /// \brief Get per-run tag
+  ///
+  /// This is used in a per-run log identifier.
+  ///
+  /// \see OrtApi::RunOptionsSetRunTag
+  ///
+  /// \param[in] options
+  /// \param[out] run_tag The run tag.
+  /// Do not free this value, it is owned by `options`. It will be invalidated if the run tag
+  /// changes (i.e., with OrtApi::RunOptionsSetRunTag) or `options` is freed.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
               ffi.Pointer<ffi.Pointer<ffi.Char>> run_tag)>> RunOptionsGetRunTag;
 
+  /// \brief Set terminate flag
+  ///
+  /// If a currently executing session needs to be force terminated, this can be called from another thread to force it to fail with an error.
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options)>>
       RunOptionsSetTerminate;
 
+  /// \brief Clears the terminate flag
+  ///
+  /// Used so the OrtRunOptions instance can be used in a new OrtApi::Run call without it instantly terminating
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options)>>
       RunOptionsUnsetTerminate;
 
+  /// \brief Create a tensor
+  ///
+  /// Create a tensor using a supplied ::OrtAllocator
+  ///
+  /// \param[in] allocator
+  /// \param[in] shape Pointer to the tensor shape dimensions.
+  /// \param[in] shape_len The number of tensor shape dimensions.
+  /// \param[in] type
+  /// \param[out] out Returns newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -942,6 +1502,22 @@ class OrtApi extends ffi.Struct {
               ffi.Int32 type,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> CreateTensorAsOrtValue;
 
+  /// \brief Create a tensor backed by a user supplied buffer
+  ///
+  /// Create a tensor with user's buffer. You can fill the buffer either before calling this function or after.
+  /// p_data is owned by caller. ReleaseValue won't release p_data.
+  ///
+  /// If you wish to transfer ownership of p_data to ORT use CreateTensorWithDataAndDeleterAsOrtValue.
+  ///
+  /// \param[in] info Memory description of where the p_data buffer resides (CPU vs GPU etc).
+  /// \param[in] p_data Pointer to the data buffer.
+  /// \param[in] p_data_len The number of bytes in the data buffer.
+  /// \param[in] shape Pointer to the tensor shape dimensions.
+  /// \param[in] shape_len The number of tensor shape dimensions.
+  /// \param[in] type The data type.
+  /// \param[out] out Returns newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -954,16 +1530,38 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
       CreateTensorWithDataAsOrtValue;
 
+  /// \brief Return if an ::OrtValue is a tensor type
+  ///
+  /// \param[in] value A tensor type (string tensors are not supported)
+  /// \param[out] out Set to 1 iff ::OrtValue is a tensor, 0 otherwise
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
               ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Int> out)>> IsTensor;
 
+  /// \brief Get a pointer to the raw data inside a tensor
+  ///
+  /// Used to read/write/modify the internal tensor data directly.
+  /// \note The returned pointer is valid until the \p value is destroyed.
+  ///
+  /// \param[in] value A tensor type (string tensors are not supported)
+  /// \param[out] out Filled in with a pointer to the internal storage
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtValue> value,
               ffi.Pointer<ffi.Pointer<ffi.Void>> out)>> GetTensorMutableData;
 
+  /// \brief Set all strings at once in a string tensor
+  ///
+  /// \param[in,out] value A tensor of type ONNX_TENSOR_ELEMENT_DATA_TYPE_STRING
+  /// \param[in] s An array of strings. Each string in this array must be null terminated.
+  /// \param[in] s_len Count of strings in s (Must match the size of \p value's tensor shape)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -971,12 +1569,38 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> s,
               ffi.Size s_len)>> FillStringTensor;
 
+  /// \brief Get total byte length for all strings in a string tensor
+  ///
+  /// Typically used with OrtApi::GetStringTensorContent
+  ///
+  /// \param[in] value A tensor of type ONNX_TENSOR_ELEMENT_DATA_TYPE_STRING
+  /// \param[out] len Total byte length of all strings (does not include trailing nulls)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Size> len)>>
       GetStringTensorDataLength;
 
+  /// \brief Get all strings from a string tensor
+  ///
+  /// An example of the results:<br>
+  /// Given \p value is a string tensor with the strings { "This" "is" "a" "test" }<br>
+  /// \p s must have a size of 11 bytes<br>
+  /// \p offsets must have 4 elements<br>
+  /// After the call, these values will be filled in:<br>
+  /// \p s will contain "Thisisatest"<br>
+  /// \p offsets will contain { 0, 4, 6, 7 }<br>
+  /// The length of the last string is just s_len - offsets[last]
+  ///
+  /// \param[in] value A tensor of type ONNX_TENSOR_ELEMENT_DATA_TYPE_STRING
+  /// \param[in] s Buffer to sequentially write all tensor strings to. Each string is NOT null-terminated.
+  /// \param[in] s_len Number of bytes of buffer pointed to by \p s (Get it from OrtApi::GetStringTensorDataLength)
+  /// \param[out] offsets Array of start offsets into the strings written to \p s
+  /// \param[in] offsets_len Number of elements in offsets
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -986,29 +1610,60 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Size> offsets,
               ffi.Size offsets_len)>> GetStringTensorContent;
 
+  /// \brief Get ::OrtTensorTypeAndShapeInfo from an ::OrtTypeInfo
+  ///
+  /// \param[in] type_info
+  /// \param[out] out Do not free this value, it will be valid until type_info is freed.
+  /// If type_info does not represent tensor, this value will be set to nullptr.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> type_info,
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> out)>>
       CastTypeInfoToTensorInfo;
 
+  /// \brief Get ::ONNXType from ::OrtTypeInfo
+  ///
+  /// \param[in] type_info
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> type_info,
               ffi.Pointer<ffi.Int32> out)>> GetOnnxTypeFromTypeInfo;
 
+  /// \brief Create an ::OrtTensorTypeAndShapeInfo object
+  ///
+  /// \param[out] out Returns newly created ::OrtTensorTypeAndShapeInfo. Must be freed with OrtApi::ReleaseTensorTypeAndShapeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> out)>>
       CreateTensorTypeAndShapeInfo;
 
+  /// \brief Set element type in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \param[in] info
+  /// \param[in] type
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtTensorTypeAndShapeInfo> info, ffi.Int32 type)>>
       SetTensorElementType;
 
+  /// \brief Set shape information in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \param[in] info
+  /// \param[in] dim_values Array with `dim_count` elements. Can contain negative values.
+  /// \param[in] dim_count Number of elements in `dim_values`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1016,16 +1671,39 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> dim_values,
               ffi.Size dim_count)>> SetDimensions;
 
+  /// \brief Get element type in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \see OrtApi::SetTensorElementType
+  ///
+  /// \param[in] info
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtTensorTypeAndShapeInfo> info,
               ffi.Pointer<ffi.Int32> out)>> GetTensorElementType;
 
+  /// \brief Get dimension count in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \see OrtApi::GetDimensions
+  ///
+  /// \param[in] info
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtTensorTypeAndShapeInfo> info,
               ffi.Pointer<ffi.Size> out)>> GetDimensionsCount;
 
+  /// \brief Get dimensions in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \param[in] info
+  /// \param[out] dim_values Array with `dim_values_length` elements. On return, filled with the dimensions stored in the ::OrtTensorTypeAndShapeInfo
+  /// \param[in] dim_values_length Number of elements in `dim_values`. Use OrtApi::GetDimensionsCount to get this value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1033,6 +1711,13 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> dim_values,
               ffi.Size dim_values_length)>> GetDimensions;
 
+  /// \brief Get symbolic dimension names in ::OrtTensorTypeAndShapeInfo
+  ///
+  /// \param[in] info
+  /// \param[in] dim_params Array with `dim_params_length` elements. On return filled with pointers to null terminated strings of the dimension names
+  /// \param[in] dim_params_length Number of elements in `dim_params`. Use OrtApi::GetDimensionsCount to get this value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1040,28 +1725,70 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> dim_params,
               ffi.Size dim_params_length)>> GetSymbolicDimensions;
 
+  /// \brief Get total number of elements in a tensor shape from an ::OrtTensorTypeAndShapeInfo
+  ///
+  /// Return the number of elements specified by the tensor shape (all dimensions multiplied by each other).
+  /// For 0 dimensions, 1 is returned. If any dimension is less than 0, the result is always -1.
+  ///
+  /// Examples:<br>
+  /// [] = 1<br>
+  /// [1,3,4] = 12<br>
+  /// [2,0,4] = 0<br>
+  /// [-1,3,4] = -1<br>
+  ///
+  /// \param[in] info
+  /// \param[out] out Number of elements
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtTensorTypeAndShapeInfo> info,
               ffi.Pointer<ffi.Size> out)>> GetTensorShapeElementCount;
 
+  /// \brief Get type and shape information from a tensor ::OrtValue
+  ///
+  /// \param[in] value Must be a tensor (not a map/sequence/etc) or will return failure
+  /// \param[out] out Newly created ::OrtTensorTypeAndShapeInfo. Must be freed with OrtApi::ReleaseTensorTypeAndShapeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtValue> value,
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> out)>>
       GetTensorTypeAndShape;
 
+  /// \brief Get type information of an OrtValue
+  ///
+  /// \param[in] value
+  /// \param[out] out Newly created ::OrtTypeInfo. Must be freed with OrtApi::ReleaseTypeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtValue> value,
               ffi.Pointer<ffi.Pointer<OrtTypeInfo>> out)>> GetTypeInfo;
 
+  /// \brief Get ONNXType of an ::OrtValue
+  ///
+  /// \param[in] value
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Int32> out)>>
       GetValueType;
 
+  /// \brief Create an ::OrtMemoryInfo
+  ///
+  /// \param[in] name
+  /// \param[in] type
+  /// \param[in] id
+  /// \param[in] mem_type
+  /// \param[out] out Newly created ::OrtMemoryInfo. Must be freed with OrtAPi::ReleaseMemoryInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1071,12 +1798,30 @@ class OrtApi extends ffi.Struct {
               ffi.Int32 mem_type,
               ffi.Pointer<ffi.Pointer<OrtMemoryInfo>> out)>> CreateMemoryInfo;
 
+  /// \brief Create an ::OrtMemoryInfo for CPU memory
+  ///
+  /// Special case version of OrtApi::CreateMemoryInfo for CPU based memory. Same as using OrtApi::CreateMemoryInfo with name = "Cpu" and id = 0.
+  ///
+  /// \param[in] type
+  /// \param[in] mem_type
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Int32 type, ffi.Int32 mem_type,
                   ffi.Pointer<ffi.Pointer<OrtMemoryInfo>> out)>>
       CreateCpuMemoryInfo;
 
+  /// \brief Compare ::OrtMemoryInfo objects for equality
+  ///
+  /// Compares all settings of each ::OrtMemoryInfo for equality
+  ///
+  /// \param[in] info1
+  /// \param[in] info2
+  /// \param[out] out Set to 0 if equal, -1 if not equal
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1084,29 +1829,39 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtMemoryInfo> info2,
               ffi.Pointer<ffi.Int> out)>> CompareMemoryInfo;
 
+  /// \brief Get name from ::OrtMemoryInfo
+  ///
+  /// \param[in] ptr
+  /// \param[out] out Writes null terminated string to this pointer. Do NOT free the returned pointer. It is valid for the lifetime of the ::OrtMemoryInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtMemoryInfo> ptr,
               ffi.Pointer<ffi.Pointer<ffi.Char>> out)>> MemoryInfoGetName;
 
+  /// \brief Get the id from ::OrtMemoryInfo
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtMemoryInfo> ptr, ffi.Pointer<ffi.Int> out)>>
       MemoryInfoGetId;
 
+  /// \brief Get the ::OrtMemType from ::OrtMemoryInfo
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtMemoryInfo> ptr, ffi.Pointer<ffi.Int32> out)>>
       MemoryInfoGetMemType;
 
+  /// \brief Get the ::OrtAllocatorType from ::OrtMemoryInfo
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtMemoryInfo> ptr, ffi.Pointer<ffi.Int32> out)>>
       MemoryInfoGetType;
 
+  /// \brief Calls OrtAllocator::Alloc function
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1114,22 +1869,41 @@ class OrtApi extends ffi.Struct {
               ffi.Size size,
               ffi.Pointer<ffi.Pointer<ffi.Void>> out)>> AllocatorAlloc;
 
+  /// \brief Calls OrtAllocator::Free function
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtAllocator> ort_allocator,
               ffi.Pointer<ffi.Void> p)>> AllocatorFree;
 
+  /// \brief Calls OrtAllocator::Info function
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtAllocator> ort_allocator,
               ffi.Pointer<ffi.Pointer<OrtMemoryInfo>> out)>> AllocatorGetInfo;
 
+  /// \brief Get the default allocator
+  ///
+  /// The default allocator is a CPU based, non-arena. Always returns the same pointer to the same default allocator.
+  ///
+  /// \param[out] out Returned value should NOT be freed
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtAllocator>> out)>>
       GetAllocatorWithDefaultOptions;
 
+  /// \brief Override session symbolic dimensions
+  ///
+  /// Override symbolic dimensions (by specific denotation strings) with actual values if known at session initialization time to enable
+  /// optimizations that can take advantage of fixed values (such as memory planning, etc)
+  ///
+  /// \param[in] options
+  /// \param[in] dim_denotation
+  /// \param[in] dim_value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1137,6 +1911,19 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> dim_denotation,
               ffi.Int64 dim_value)>> AddFreeDimensionOverride;
 
+  /// \brief Get non tensor data from an ::OrtValue
+  ///
+  /// If `value` is of type ONNX_TYPE_MAP, you need to retrieve the keys and values
+  /// separately. Use index=0 to retrieve keys and index=1 to retrieve values.
+  /// If `value` is of type ONNX_TYPE_SEQUENCE, use index to retrieve the index'th element
+  /// of the sequence.
+  ///
+  /// \param[in] value
+  /// \param[in] index See above for usage based on `value` type
+  /// \param[in] allocator Allocator used to allocate ::OrtValue
+  /// \param[out] out Created ::OrtValue that holds the element requested. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1145,12 +1932,35 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtAllocator> allocator,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> GetValue;
 
+  /// \brief Get non tensor value count from an ::OrtValue
+  ///
+  /// If `value` is of type ONNX_TYPE_MAP 2 will always be returned. For ONNX_TYPE_SEQUENCE
+  /// the number of elements in the sequence will be returned
+  ///
+  /// \param[in] value
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Size> out)>>
       GetValueCount;
 
+  /// \brief Create a map or sequence ::OrtValue
+  ///
+  /// To construct a map (ONNX_TYPE_MAP), use num_values = 2 and `in` should be an array of 2 ::OrtValue%s
+  /// representing keys and values.<br>
+  ///
+  /// To construct a sequence (ONNX_TYPE_SEQUENCE), use num_values = N where N is the number of the elements in the
+  /// sequence. 'in' should be an array of N ::OrtValue%s.
+  ///
+  /// \param[in] in See above for details
+  /// \param[in] num_values
+  /// \param[in] value_type Must be either ONNX_TYPE_MAP or ONNX_TYPE_SEQUENCE
+  /// \param[out] out Newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1159,6 +1969,27 @@ class OrtApi extends ffi.Struct {
               ffi.Int32 value_type,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> CreateValue;
 
+  /// \brief Create an opaque (custom user defined type) ::OrtValue
+  ///
+  /// Constructs an ::OrtValue that contains a value of non-standard type created for
+  /// experiments or while awaiting standardization. ::OrtValue in this case would contain
+  /// an internal representation of the Opaque type. Opaque types are distinguished from
+  /// each other by two strings 1) domain and 2) type name. The combination of the two
+  /// must be unique, so the type representation is properly identified internally. The combination
+  /// must be properly registered from within ORT at both compile/run time or by another API.
+  ///
+  /// To construct the ::OrtValue pass domain and type names, also a pointer to a data container
+  /// the type of which must be known to both ORT and the client program. That data container may or may
+  /// not match the internal representation of the Opaque type. The sizeof(data_container) is passed for
+  /// verification purposes.
+  ///
+  /// \param[in] domain_name Null terminated string of the domain name
+  /// \param[in] type_name Null terminated string of the type name
+  /// \param[in] data_container User pointer Data to populate ::OrtValue
+  /// \param[in] data_container_size Size in bytes of what `data_container` points to
+  /// \param[out] out Newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1168,6 +1999,19 @@ class OrtApi extends ffi.Struct {
               ffi.Size data_container_size,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> CreateOpaqueValue;
 
+  /// \brief Get internal data from an opaque (custom user defined type) ::OrtValue
+  ///
+  /// Copies internal data from an opaque value into a user provided buffer
+  ///
+  /// \see OrtApi::CreateOpaqueValue
+  ///
+  /// \param[in] domain_name Null terminated string of the domain name
+  /// \param[in] type_name Null terminated string of the type name
+  /// \param[in] in The opaque ::OrtValue
+  /// \param[out] data_container Buffer to copy data into
+  /// \param[out] data_container_size Size in bytes of the buffer pointed to by data_container. Must match the size of the internal buffer.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1177,6 +2021,13 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Void> data_container,
               ffi.Size data_container_size)>> GetOpaqueValue;
 
+  /// \brief Get a float stored as an attribute in the graph node
+  ///
+  /// \param[in] info ::OrtKernelInfo instance
+  /// \param[in] name Null terminated string of the name of the attribute
+  /// \param[out] out Pointer to memory where the attribute will be stored
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1184,6 +2035,13 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<ffi.Float> out)>> KernelInfoGetAttribute_float;
 
+  /// \brief Fetch a 64-bit int stored as an attribute in the graph node
+  ///
+  /// \param[in] info ::OrtKernelInfo instance
+  /// \param[in] name Null terminated string of the name of the attribute
+  /// \param[out] out Pointer to memory where the attribute will be stored
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1191,6 +2049,25 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<ffi.Int64> out)>> KernelInfoGetAttribute_int64;
 
+  /// \brief Fetch a string stored as an attribute in the graph node
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the true size of the string
+  /// attribute, and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the actual string attribute's size,
+  /// the value of `size` is set to the true size of the string attribute, the provided memory
+  /// is filled with the attribute's contents, and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual string attribute's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the string attribute
+  /// and a failure status is returned.)
+  ///
+  /// \param[in] info ::OrtKernelInfo instance
+  /// \param[in] name Null terminated string of the name of the attribute
+  /// \param[out] out Pointer to memory where the attribute will be stored
+  /// \param[in,out] size See above comments for details
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1199,16 +2076,32 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfoGetAttribute_string;
 
+  /// \brief Used for custom operators, get the input count of a kernel
+  ///
+  /// \see ::OrtCustomOp
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtKernelContext> context,
               ffi.Pointer<ffi.Size> out)>> KernelContext_GetInputCount;
 
+  /// \brief Used for custom operators, get the output count of a kernel
+  ///
+  /// \see ::OrtCustomOp
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtKernelContext> context,
               ffi.Pointer<ffi.Size> out)>> KernelContext_GetOutputCount;
 
+  /// \brief Used for custom operators, get an input of a kernel
+  ///
+  /// The function attempts fetches the input of the kernel. If the input is optional
+  /// and not present, the function returns success and out is set to nullptr.
+  ///
+  /// \param[in] context ::OrtKernelContext instance
+  /// \param[in] index See KernelContext_GetInputCount for boundaries check.
+  /// \param[out] out OrtValue if the input is present otherwise is set nullptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1216,6 +2109,18 @@ class OrtApi extends ffi.Struct {
               ffi.Size index,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> KernelContext_GetInput;
 
+  /// \brief Used for custom operators, get an output of a kernel
+  ///
+  /// The function attempts fetches the output of the kernel. If the output is optional
+  /// and not present, the function returns success and out is set to nullptr.
+  ///
+  /// \param[in] context ::OrtKernelContext instance
+  /// \param[in] index See KernelContext_GetOutputCount for boundaries check.
+  /// \param[in] dim_values output dimensions
+  /// \param[in] dim_count number of dimensions
+  /// \param[out] out a ptr to OrtValue to output otherwise set to nullptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1225,51 +2130,90 @@ class OrtApi extends ffi.Struct {
               ffi.Size dim_count,
               ffi.Pointer<ffi.Pointer<OrtValue>> out)>> KernelContext_GetOutput;
 
+  /// @}
+  /// \name OrtEnv
+  /// @{
   external ffi
       .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtEnv> input)>>
       ReleaseEnv;
 
+  /// @}
+  /// \name OrtStatus
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtStatus> input)>>
       ReleaseStatus;
 
+  /// @}
+  /// \name OrtMemoryInfo
+  /// @{
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtMemoryInfo> input)>>
       ReleaseMemoryInfo;
 
+  /// Don't call ReleaseSession from Dllmain (because session owns a thread pool)
   external ffi.Pointer<
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtSession> input)>>
       ReleaseSession;
 
+  /// @}
+  /// \name OrtValue
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtValue> input)>>
       ReleaseValue;
 
+  /// @}
+  /// \name OrtRunOptions
+  /// @{
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtRunOptions> input)>>
       ReleaseRunOptions;
 
+  /// @}
+  /// \name OrtTypeInfo
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtTypeInfo> input)>>
       ReleaseTypeInfo;
 
+  /// @}
+  /// \name OrtTensorTypeAndShapeInfo
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Pointer<OrtTensorTypeAndShapeInfo> input)>>
       ReleaseTensorTypeAndShapeInfo;
 
+  /// @}
+  /// \name OrtSessionOptions
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Pointer<OrtSessionOptions> input)>>
       ReleaseSessionOptions;
 
+  /// @}
+  /// \name OrtCustomOpDomain
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Pointer<OrtCustomOpDomain> input)>>
       ReleaseCustomOpDomain;
 
+  /// \brief Get denotation from type information
+  ///
+  /// Augments ::OrtTypeInfo to return denotations on the type.
+  ///
+  /// This is used by WinML to determine if an input/output is intended to be an Image or a Tensor.
+  ///
+  /// \param[in] type_info
+  /// \param[out] denotation Pointer to the null terminated denotation string is written to this pointer. This pointer is valid until the object is destroyed or the name is changed, do not free.
+  /// \param[out] len Length in bytes of the string returned in `denotation`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1277,29 +2221,79 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> denotation,
               ffi.Pointer<ffi.Size> len)>> GetDenotationFromTypeInfo;
 
+  /// \brief Get detailed map information from an ::OrtTypeInfo
+  ///
+  /// This augments ::OrtTypeInfo to return an ::OrtMapTypeInfo when the type is a map.
+  /// The OrtMapTypeInfo has additional information about the map's key type and value type.
+  ///
+  /// This is used by WinML to support model reflection APIs.
+  ///
+  /// \param[out] type_info
+  /// \param[out] out A pointer to the ::OrtMapTypeInfo. Do not free this value. If type_info
+  /// does not contain a map, this value will be set to nullptr.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> type_info,
                   ffi.Pointer<ffi.Pointer<OrtMapTypeInfo>> out)>>
       CastTypeInfoToMapTypeInfo;
 
+  /// \brief Cast ::OrtTypeInfo to an ::OrtSequenceTypeInfo
+  ///
+  /// This api augments ::OrtTypeInfo to return an ::OrtSequenceTypeInfo when the type is a sequence.
+  /// The ::OrtSequenceTypeInfo has additional information about the sequence's element type.
+  ///
+  /// This is used by WinML to support model reflection APIs.
+  ///
+  /// \param[in] type_info
+  /// \param[out] out A pointer to the OrtSequenceTypeInfo. Do not free this value. If type_info
+  /// doesn not contain a sequence, this value will be set to nullptr.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> type_info,
                   ffi.Pointer<ffi.Pointer<OrtSequenceTypeInfo>> out)>>
       CastTypeInfoToSequenceTypeInfo;
 
+  /// \brief Get key type from an ::OrtMapTypeInfo
+  ///
+  /// Key types are restricted to being scalar types.
+  ///
+  /// This is used by WinML to support model reflection APIs.
+  ///
+  /// \param[in] map_type_info
+  /// \param[out] out
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtMapTypeInfo> map_type_info,
               ffi.Pointer<ffi.Int32> out)>> GetMapKeyType;
 
+  /// \brief Get the value type from an ::OrtMapTypeInfo
+  ///
+  /// \param[in] map_type_info
+  /// \param[out] type_info A copy of the OrtTypeInfo for the map value type.
+  /// The user must free this value with ReleaseTypeInfo.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtMapTypeInfo> map_type_info,
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       GetMapValueType;
 
+  /// \brief Get element type from an ::OrtSequenceTypeInfo
+  ///
+  /// This is used by WinML to support model reflection APIs.
+  ///
+  /// \param[in] sequence_type_info
+  /// \param[out] type_info A copy of the OrtTypeInfo for the sequence element type.
+  /// The user must free this value with ReleaseTypeInfo.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1307,16 +2301,31 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       GetSequenceElementType;
 
+  /// @}
+  /// \name OrtMapTypeInfo
+  /// @{
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtMapTypeInfo> input)>>
       ReleaseMapTypeInfo;
 
+  /// @}
+  /// \name OrtSequenceTypeInfo
+  /// @{
   external ffi.Pointer<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Pointer<OrtSequenceTypeInfo> input)>>
       ReleaseSequenceTypeInfo;
 
+  /// \brief End profiling and return filename of the profile data
+  ///
+  /// Profiling is turned on through OrtApi::EnableProfiling
+  ///
+  /// \param[in] session
+  /// \param[in] allocator
+  /// \param[out] out Null terminated string of the filename, allocated using `allocator`. Must be freed using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1324,12 +2333,25 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtAllocator> allocator,
               ffi.Pointer<ffi.Pointer<ffi.Char>> out)>> SessionEndProfiling;
 
+  /// \brief Get ::OrtModelMetadata from an ::OrtSession
+  ///
+  /// \param[in] session
+  /// \param[out] out Newly created ::OrtModelMetadata. Must be freed using OrtApi::ReleaseModelMetadata
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSession> session,
                   ffi.Pointer<ffi.Pointer<OrtModelMetadata>> out)>>
       SessionGetModelMetadata;
 
+  /// \brief Get `producer name` from an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated string allocated using `allocator`. Must be freed using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1338,6 +2360,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataGetProducerName;
 
+  /// \brief Get `graph name` from an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated string allocated using `allocator`. Must be freed using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1346,6 +2375,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataGetGraphName;
 
+  /// \brief Get `domain` from an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated string allocated using `allocator`. Must be freed using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1354,6 +2390,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataGetDomain;
 
+  /// \brief Get `description` from an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[out] value Set to a null terminated string allocated using `allocator`. Must be freed using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1362,6 +2405,15 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataGetDescription;
 
+  /// \brief Return data for a key in the custom metadata map in an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[in] key Null terminated string
+  /// \param[out] value Set to a null terminated string allocated using `allocator`. Must be freed using `allocator`
+  /// `value` will be set to nullptr if the given key is not found in the custom metadata map.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1371,6 +2423,12 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataLookupCustomMetadataMap;
 
+  /// \brief Get version number from an ::OrtModelMetadata
+  ///
+  /// \param[in] model_metadata
+  /// \param[out] value Set to the version number
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtModelMetadata> model_metadata,
@@ -1381,6 +2439,18 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtModelMetadata> input)>>
       ReleaseModelMetadata;
 
+  /// \brief Create an OrtEnv
+  ///
+  /// Create an environment with global threadpools that will be shared across sessions.
+  /// Use this in conjunction with OrtApi::DisablePerSessionThreads or else the session will use
+  /// its own thread pools.
+  ///
+  /// \param[in] log_severity_level The log severity level.
+  /// \param[in] logid The log identifier.
+  /// \param[in] tp_options
+  /// \param[out] out Returned newly created OrtEnv. Must be freed with OrtApi::ReleaseEnv
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1390,11 +2460,23 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtEnv>> out)>>
       CreateEnvWithGlobalThreadPools;
 
+  /// \brief Use global thread pool on a session
+  ///
+  /// Disable using per session thread pool and use the shared global threadpool.
+  /// This should be used in conjunction with OrtApi::CreateEnvWithGlobalThreadPools.
+  ///
+  /// \param[in] options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       DisablePerSessionThreads;
 
+  /// \brief Create an ::OrtThreadingOptions
+  ///
+  /// \param[out] out Newly created ::OrtThreadingOptions. Must be freed with OrtApi::ReleaseThreadingOptions
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1406,6 +2488,14 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtThreadingOptions> input)>>
       ReleaseThreadingOptions;
 
+  /// \param[in] model_metadata
+  /// \param[in] allocator
+  /// \param[out] keys Array of null terminated strings (array count = num_keys) allocated using `allocator`.
+  /// The strings and the pointer array must be freed using `allocator`
+  /// `keys` will be set to nullptr if the custom metadata map is empty.
+  /// \param[out] num_keys Set to the number of elements in the `keys` array
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1415,6 +2505,9 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Int64> num_keys)>>
       ModelMetadataGetCustomMetadataMapKeys;
 
+  /// Override symbolic dimensions (by specific name strings) with actual values
+  /// if known at session initialization time to enable optimizations that can
+  /// take advantage of fixed values (such as memory planning, etc)
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1422,27 +2515,66 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> dim_name,
               ffi.Int64 dim_value)>> AddFreeDimensionOverrideByName;
 
+  /// \brief Get the names of all available providers
+  ///
+  /// \note The providers in the list are not guaranteed to be usable. They may fail to load due to missing system dependencies.
+  /// For example, if the CUDA/cuDNN libraries are not installed, the CUDA provider will report an error when it is added to the session options.
+  ///
+  /// \param[out] out_ptr Set to a pointer to an array of null terminated strings of the available providers. The entries and the
+  /// array itself must be freed using OrtApi::ReleaseAvailableProviders
+  /// \param[out] provider_length Set to the number of entries in the `out_ptr` array
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
               ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.Char>>> out_ptr,
               ffi.Pointer<ffi.Int> provider_length)>> GetAvailableProviders;
 
+  /// \brief Release data from OrtApi::GetAvailableProviders. This API will never fail
+  /// so you can rely on it in a noexcept code.
+  ///
+  /// \param[in] ptr The `out_ptr` result from OrtApi::GetAvailableProviders.
+  /// \param[in] providers_length The `provider_length` result from OrtApi::GetAvailableProviders
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<ffi.Pointer<ffi.Char>> ptr,
               ffi.Int providers_length)>> ReleaseAvailableProviders;
 
+  /// \brief Get the length of a single string in a string tensor
+  ///
+  /// \param[in] value A string tensor
+  /// \param[in] index Index of the string in the tensor
+  /// \param[out] out Set to number of bytes of the string element
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtValue> value, ffi.Size index,
               ffi.Pointer<ffi.Size> out)>> GetStringTensorElementLength;
 
+  /// \brief Get a single string from a string tensor
+  ///
+  /// \param[in] value A string tensor
+  /// \param[in] s_len Number of bytes in the `s` buffer. Must match the value returned by OrtApi::GetStringTensorElementLength.
+  /// \param[in] index Index of the string in the tensor
+  /// \param[out] s The string element contents in UTF-8 encoding. The string is NOT null-terminated.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtValue> value, ffi.Size s_len,
               ffi.Size index, ffi.Pointer<ffi.Void> s)>> GetStringTensorElement;
 
+  /// \brief Set a single string in a string tensor
+  ///
+  /// \param[in] value A string tensor
+  /// \param[in] s A null terminated UTF-8 encoded string
+  /// \param[in] index Index of the string in the tensor to set
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1450,6 +2582,17 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> s,
               ffi.Size index)>> FillStringTensorElement;
 
+  /// \brief Set a session configuration entry as a pair of strings
+  ///
+  /// If a configuration with same key exists, this will overwrite the configuration with the given config_value.
+  ///
+  /// The config_key and the format of config_value are defined in onnxruntime_session_options_config_keys.h
+  ///
+  /// \param[in] options
+  /// \param[in] config_key A null terminated string representation of the config key
+  /// \param[in] config_value A null terminated string representation of the config value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1457,6 +2600,13 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> config_key,
               ffi.Pointer<ffi.Char> config_value)>> AddSessionConfigEntry;
 
+  /// \brief Create an allocator for an ::OrtSession following an ::OrtMemoryInfo
+  ///
+  /// \param[in] session
+  /// \param[in] mem_info valid ::OrtMemoryInfo instance
+  /// \param[out] out Newly created ::OrtAllocator. Must be freed with OrtApi::ReleaseAllocator
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1464,11 +2614,21 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtMemoryInfo> mem_info,
               ffi.Pointer<ffi.Pointer<OrtAllocator>> out)>> CreateAllocator;
 
+  /// \brief Release an ::OrtAllocator obtained from OrtApi::CreateAllocator
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtAllocator> input)>>
       ReleaseAllocator;
 
+  /// \brief Run a model using Io Bindings for the inputs & outputs
+  ///
+  /// \see OrtApi::Run
+  ///
+  /// \param[in] session
+  /// \param[in] run_options
+  /// \param[in] binding_ptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1476,16 +2636,36 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtRunOptions> run_options,
               ffi.Pointer<OrtIoBinding> binding_ptr)>> RunWithBinding;
 
+  /// \brief Create an ::OrtIoBinding instance
+  ///
+  /// An IoBinding object allows one to bind pre-allocated ::OrtValue%s to input names.
+  /// Thus if you want to use a raw on device buffer as input or output you can avoid
+  /// extra copy during runtime.
+  ///
+  /// \param[in] session
+  /// \param[out] out Newly created ::OrtIoBinding. Must be freed with OrtApi::ReleaseIoBinding
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSession> session,
               ffi.Pointer<ffi.Pointer<OrtIoBinding>> out)>> CreateIoBinding;
 
+  /// \brief Release an ::OrtIoBinding obtained from OrtApi::CreateIoBinding
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtIoBinding> input)>>
       ReleaseIoBinding;
 
+  /// \brief Bind an ::OrtValue to an ::OrtIoBinding input
+  ///
+  /// When using OrtApi::RunWithBinding this value is used for the named input
+  ///
+  /// \param[in] binding_ptr
+  /// \param[in] name Name for the model input
+  /// \param[in] val_ptr ::OrtValue of Tensor type.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1493,6 +2673,15 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<OrtValue> val_ptr)>> BindInput;
 
+  /// \brief Bind an ::OrtValue to an ::OrtIoBinding output
+  ///
+  /// When using OrtApi::RunWithBinding this value is used for the named output
+  ///
+  /// \param[in] binding_ptr
+  /// \param[in] name Null terminated string of the model output name
+  /// \param[in] val_ptr ::OrtValue of Tensor type.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1500,6 +2689,20 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<OrtValue> val_ptr)>> BindOutput;
 
+  /// \brief Bind an ::OrtIoBinding output to a device
+  ///
+  /// Binds the ::OrtValue to a device which is specified by ::OrtMemoryInfo.
+  /// You can either create an instance of ::OrtMemoryInfo with a device id or obtain one from the allocator that you have created/are using
+  /// This is useful when one or more outputs have dynamic shapes and, it is hard to pre-allocate and bind a chunk of
+  /// memory within ::OrtValue ahead of time.
+  ///
+  /// \see OrtApi::RunWithBinding
+  ///
+  /// \param[in] binding_ptr
+  /// \param[in] name Null terminated string of the device name
+  /// \param[in] mem_info_ptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1507,6 +2710,22 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<OrtMemoryInfo> mem_info_ptr)>> BindOutputToDevice;
 
+  /// \brief Get the names of an ::OrtIoBinding's outputs
+  ///
+  /// Returns the names of the outputs in the order they were bound. This is useful after running the model
+  /// with bound outputs because the returned names are in order in which output ::OrtValue are returned. This is useful if
+  /// the order of outputs and their names is not known.
+  ///
+  /// \param[in] binding_ptr
+  /// \param[in] allocator Allocator used to allocate continuous buffers for output strings and lengths.
+  /// \param[out] buffer Returns an array of non-null terminated UTF-8 strings. The number of strings stored is returned in the count parameter.
+  /// This buffer is allocated using `allocator` and must be freed using it.
+  /// \param[out] lengths Returns an array of `count` lengths of the strings returned in `buffer`
+  /// This buffer is allocated using `allocator` and must be freed using it.
+  /// \param[out] count Number of strings returned. If `binding_ptr` has no bound outputs, zero is returned,
+  /// no memory allocation is performed and buffer and lengths are set to nullptr.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1516,6 +2735,22 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Size>> lengths,
               ffi.Pointer<ffi.Size> count)>> GetBoundOutputNames;
 
+  /// \brief Get the output ::OrtValue objects from an ::OrtIoBinding
+  ///
+  /// Returns an array of pointers to individually allocated ::OrtValue%s that contain results of a model execution with OrtApi::RunWithBinding
+  /// The array contains the same number of ::OrtValue%s and they are in the same order as they were bound with OrtApi::BindOutput
+  /// or OrtApi::BindOutputToDevice.
+  ///
+  /// The returned ::OrtValue%s must be released using OrtApi::ReleaseValue after they are no longer needed.
+  /// The array is allocated using the specified instance of the allocator and must be freed using the same allocator after
+  /// all the ::OrtValue%s contained therein are individually released.
+  ///
+  /// \param[in] binding_ptr
+  /// \param[in] allocator Allocator used to allocate output array
+  /// \param[out] output Set to the allocated array of allocated ::OrtValue outputs. Set to nullptr if there are 0 outputs.
+  /// \param[out] output_count Set to number of ::OrtValue%s returned
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1536,6 +2771,19 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtIoBinding> binding_ptr)>>
       ClearBoundOutputs;
 
+  /// \brief Direct memory access to a specified tensor element
+  ///
+  /// For example, given a tensor with shape of [3,224,224], a pointer to the element at location [2,150,128] can be retrieved
+  ///
+  /// This function only works for numeric type tensors (No strings, etc).
+  /// This is a no-copy method whose returned pointer is valid until the passed in ::OrtValue is free'd.
+  ///
+  /// \param[in] value
+  /// \param[in] location_values Pointer to an array of index values that specify an element's location relative to its shape
+  /// \param[in] location_values_count Number of elements in location_values. Must match the number of elements in the tensor's shape.
+  /// \param[out] out Set to a pointer to the element specified
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1544,6 +2792,19 @@ class OrtApi extends ffi.Struct {
               ffi.Size location_values_count,
               ffi.Pointer<ffi.Pointer<ffi.Void>> out)>> TensorAt;
 
+  /// \brief Create an allocator and register it with the ::OrtEnv
+  ///
+  /// Enables sharing the allocator between multiple sessions that use the same env instance.
+  /// Lifetime of the created allocator will be valid for the duration of the environment.
+  /// Returns an error if an allocator with the same ::OrtMemoryInfo is already registered.
+  ///
+  /// See https://onnxruntime.ai/docs/get-started/with-c.html for details.
+  ///
+  /// \param[in] env ::OrtEnv instance
+  /// \param[in] mem_info
+  /// \param[in] arena_cfg Pass nullptr for defaults
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1551,32 +2812,95 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtMemoryInfo> mem_info,
               ffi.Pointer<OrtArenaCfg> arena_cfg)>> CreateAndRegisterAllocator;
 
+  /// \brief Set language projection
+  ///
+  /// Set the language projection for collecting telemetry data when Env is created.
+  ///
+  /// The default is ORT_PROJECTION_C, which means it will classify the language not in the list to C also.
+  ///
+  /// \param[in] ort_env
+  /// \param[in] projection
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtEnv> ort_env, ffi.Int32 projection)>>
       SetLanguageProjection;
 
+  /// \brief Return the time that profiling was started
+  ///
+  /// \note The timer precision varies per platform. On Windows and MacOS, the precision will be ~100ns
+  ///
+  /// \param[in] session
+  /// \param[out] out nanoseconds of profiling's start time
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSession> session,
               ffi.Pointer<ffi.Uint64> out)>> SessionGetProfilingStartTimeNs;
 
+  /// \brief Set global intra-op thread count
+  ///
+  /// This configures the global thread pool options to be used in the call to OrtApi::CreateEnvWithGlobalThreadPools
+  ///
+  /// \param[in] tp_options
+  /// \param[in] intra_op_num_threads Number of threads, special values:<br>
+  /// 0 = Use default thread count<br>
+  /// 1 = The invoking thread will be used; no threads will be created in the thread pool.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
               ffi.Int intra_op_num_threads)>> SetGlobalIntraOpNumThreads;
 
+  /// \brief Set global inter-op thread count
+  ///
+  /// This configures the global thread pool options to be used in the call to OrtApi::CreateEnvWithGlobalThreadPools
+  ///
+  /// \param[in] tp_options
+  /// \param[in] inter_op_num_threads Number of threads, special values:<br>
+  /// 0 = Use default thread count<br>
+  /// 1 = The invoking thread will be used; no threads will be created in the thread pool.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
               ffi.Int inter_op_num_threads)>> SetGlobalInterOpNumThreads;
 
+  /// \brief Set global spin control options
+  ///
+  /// This will configure the global thread pool options to be used in the call to OrtApi::CreateEnvWithGlobalThreadPools.
+  /// Allow spinning of thread pools when their queues are empty. This will set the value for both
+  /// inter_op and intra_op threadpools.
+  ///
+  /// \param[in] tp_options
+  /// \param[in] allow_spinning Valid values are 0 or 1.<br>
+  /// 0 = It won't spin (recommended if CPU usage is high)<br>
+  /// 1 = Threadpool will spin to wait for queue to become non-empty
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
               ffi.Int allow_spinning)>> SetGlobalSpinControl;
 
+  /// \brief Add a pre-allocated initializer to a session
+  ///
+  /// If a model contains an initializer with a name that is same as the name passed to this call,
+  /// ORT will use this initializer instance instead of deserializing one from the model file. This
+  /// is useful when you want to share the same initializer across sessions.
+  ///
+  /// \param[in] options
+  /// \param[in] name Null terminated string of the initializer name
+  /// \param[in] val ::OrtValue containing the initializer. Its lifetime and the underlying initializer buffer must be
+  /// managed by the user (created using the OrtApi::CreateTensorWithDataAsOrtValue) and it must outlive the session object
+  /// to which it is added.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1584,6 +2908,19 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> name,
               ffi.Pointer<OrtValue> val)>> AddInitializer;
 
+  /// Create a custom environment with global threadpools and logger that will be shared across sessions.
+  /// Use this in conjunction with OrtApi::DisablePerSessionThreads or else the session will use
+  /// its own thread pools.
+  ///
+  /// \param[in] logging_function A pointer to a logging function.
+  /// \param[in] logger_param A pointer to arbitrary data passed as the ::OrtLoggingFunction `param` parameter to
+  /// `logging_function`.
+  /// \param[in] log_severity_level The log severity level.
+  /// \param[in] logid The log identifier.
+  /// \param[in] tp_options
+  /// \param[out] out Newly created OrtEnv. Must be freed with OrtApi::ReleaseEnv
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1595,30 +2932,74 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtEnv>> out)>>
       CreateEnvWithCustomLoggerAndGlobalThreadPools;
 
+  /// \brief Append CUDA provider to session options
+  ///
+  /// If CUDA is not available (due to a non CUDA enabled build, or if CUDA is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] cuda_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtCUDAProviderOptions> cuda_options)>>
       SessionOptionsAppendExecutionProvider_CUDA;
 
+  /// \brief Append ROCM execution provider to the session options
+  ///
+  /// If ROCM is not available (due to a non ROCM enabled build, or if ROCM is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] rocm_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtROCMProviderOptions> rocm_options)>>
       SessionOptionsAppendExecutionProvider_ROCM;
 
+  /// \brief Append OpenVINO execution provider to the session options
+  ///
+  /// If OpenVINO is not available (due to a non OpenVINO enabled build, or if OpenVINO is not installed on the system), this function will fail.
+  ///
+  /// \param[in] options
+  /// \param[in] provider_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtOpenVINOProviderOptions> provider_options)>>
       SessionOptionsAppendExecutionProvider_OpenVINO;
 
+  /// \brief Set threading flush-to-zero and denormal-as-zero
+  ///
+  /// Sets global thread pool options to be used in the call to OrtApi::CreateEnvWithGlobalThreadPools.
+  /// Flush-to-zero and denormal-as-zero are applied to threads in both intra and inter global thread pool.
+  /// \note This option is not needed if the models used have no denormals. Having no denormals is recommended as this option may hurt model accuracy.
+  ///
+  /// \param[in] tp_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtThreadingOptions> tp_options)>>
       SetGlobalDenormalAsZero;
 
+  /// \deprecated Use OrtApi::CreateArenaCfgV2
+  ///
+  /// This will create the configuration of an arena that can eventually be used to define an arena based allocator's behavior
+  ///
+  /// \param[in] max_mem Use 0 to allow ORT to choose the default
+  /// \param[in] arena_extend_strategy Use -1 to allow ORT to choose the default, 0 = kNextPowerOfTwo, 1 = kSameAsRequested
+  /// \param[in] initial_chunk_size_bytes Use -1 to allow ORT to choose the default
+  /// \param[in] max_dead_bytes_per_chunk Use -1 to allow ORT to choose the default
+  /// \param[in] out A pointer to an OrtArenaCfg instance
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1632,6 +3013,15 @@ class OrtApi extends ffi.Struct {
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtArenaCfg> input)>>
       ReleaseArenaCfg;
 
+  /// Use this to obtain the description of the graph present in the model
+  /// (doc_string field of the GraphProto message within the ModelProto message).
+  /// If it doesn't exist, an empty string will be returned.
+  ///
+  /// \param[in] model_metadata An instance of ::OrtModelMetadata
+  /// \param[in] allocator Allocator used to allocate the string that will be returned back
+  /// \param[out] value Set to a null terminated string allocated using `allocator`.  The caller is responsible for freeing it using `allocator`
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1640,21 +3030,68 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> value)>>
       ModelMetadataGetGraphDescription;
 
+  /// \brief Append TensorRT provider to session options
+  ///
+  /// If TensorRT is not available (due to a non TensorRT enabled build, or if TensorRT is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] tensorrt_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtTensorRTProviderOptions> tensorrt_options)>>
       SessionOptionsAppendExecutionProvider_TensorRT;
 
+  /// \brief Set current GPU device ID
+  ///
+  /// Set the current device id of the GPU execution provider (CUDA/tensorrt/rocm). The device id should be less
+  /// than the total number of devices available. This is only useful when multiple-GPUs are installed and it is
+  /// required to restrict execution to a single GPU.
+  ///
+  /// \param[in] device_id
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi
       .Pointer<ffi.NativeFunction<OrtStatusPtr Function(ffi.Int device_id)>>
       SetCurrentGpuDeviceId;
 
+  /// \brief Get current GPU device ID
+  ///
+  /// Get the current device id of the GPU execution provider (CUDA/tensorrt/rocm).
+  ///
+  /// \see OrtApi::SetCurrentGpuDeviceId
+  ///
+  /// \param[out] device_id
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<ffi.Int> device_id)>>
       GetCurrentGpuDeviceId;
 
+  /// \brief Fetch an array of int64_t values stored as an attribute in the graph node
+  ///
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the true size of the attribute
+  /// array's size, and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the actual attribute array's size,
+  /// the value of `size` is set to the true size of the attribute array's size,
+  /// the provided memory is filled with the attribute's contents,
+  /// and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual attribute array's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the attribute array's size
+  /// and a failure status is returned.)
+  ///
+  /// \param[in] info instance
+  /// \param[in] name name of the attribute to be parsed
+  /// \param[out] out pointer to memory where the attribute's contents are to be stored
+  /// \param[in, out] size actual size of attribute array
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1663,6 +3100,26 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Float> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfoGetAttributeArray_float;
 
+  /// \brief Fetch an array of int64_t values stored as an attribute in the graph node
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the true size of the attribute
+  /// array's size, and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the actual attribute array's size,
+  /// the value of `size` is set to the true size of the attribute array's size,
+  /// the provided memory is filled with the attribute's contents,
+  /// and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual attribute array's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the attribute array's size
+  /// and a failure status is returned.)
+  ///
+  /// \param[in] info instance
+  /// \param[in] name name of the attribute to be parsed
+  /// \param[out] out pointer to memory where the attribute's contents are to be stored
+  /// \param[in, out] size actual size of attribute array
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1671,6 +3128,36 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfoGetAttributeArray_int64;
 
+  /// \brief Create an ::OrtArenaCfg
+  ///
+  /// Create the configuration of an arena that can eventually be used to define an arena based allocator's behavior.
+  ///
+  /// Supported keys are (See https://onnxruntime.ai/docs/get-started/with-c.html for details on what the
+  /// following parameters mean and how to choose these values.):
+  /// "max_mem": Maximum memory that can be allocated by the arena based allocator.
+  /// Use 0 for ORT to pick the best value. Default is 0.
+  /// "arena_extend_strategy": 0 = kNextPowerOfTwo, 1 = kSameAsRequested.
+  /// Use -1 to allow ORT to choose the default.
+  /// "initial_chunk_size_bytes": (Possible) Size of the first allocation in the arena.
+  /// Only relevant if arena strategy is `kNextPowerOfTwo`. Use -1 to allow ORT to choose the default.
+  /// Ultimately, the first allocation size is determined by the allocation memory request.
+  /// "max_dead_bytes_per_chunk": Threshold of unused memory in an allocated chunk of arena memory after
+  /// crossing which the current chunk is chunked into 2.
+  /// "initial_growth_chunk_size_bytes": (Possible) Size of the second allocation in the arena.
+  /// Only relevant if arena strategy is `kNextPowerOfTwo`. Use -1 to allow ORT to choose the default.
+  /// "max_power_of_two_extend_bytes": The maximum enxtend size if arena strategy is `kNextPowerOfTwo`.
+  /// It is not an allocation limit, it is only a limit for extension when requested byte is less than the limit.
+  /// When requested bytes is more than the limit, allocator will still return as requested.
+  /// Use -1 to allow ORT to choose the default 1GB for max_power_of_two_extend_bytes.
+  /// Ultimately, the allocation size is determined by the allocation memory request.
+  /// Further allocation sizes are governed by the arena extend strategy.
+  ///
+  /// \param[in] arena_config_keys Keys to configure the arena
+  /// \param[in] arena_config_values Values to configure the arena
+  /// \param[in] num_keys Number of keys in `arena_config_keys` and `arena_config_values`
+  /// \param[out] out Newly created ::OrtArenaCfg. Must be freed with OrtApi::ReleaseArenaCfg
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1679,6 +3166,17 @@ class OrtApi extends ffi.Struct {
               ffi.Size num_keys,
               ffi.Pointer<ffi.Pointer<OrtArenaCfg>> out)>> CreateArenaCfgV2;
 
+  /// \brief Set a single run configuration entry as a pair of strings
+  ///
+  /// If a configuration with same key exists, this will overwrite the configuration with the given config_value
+  ///
+  /// The config_key and the format of config_value are defined in onnxruntime_run_options_config_keys.h
+  ///
+  /// \param[in] options
+  /// \param[in] config_key A null terminated string representation of the config key
+  /// \param[in] config_value  A null terminated string representation of the config value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1686,18 +3184,48 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> config_key,
               ffi.Pointer<ffi.Char> config_value)>> AddRunConfigEntry;
 
+  /// \brief Create an ::OrtPrepackedWeightsContainer
+  ///
+  /// This container will hold pre-packed buffers of shared initializers for sharing between sessions
+  /// (i.e.) if there are shared initializers that can be shared between sessions, the pre-packed buffers
+  /// of these (if any) may possibly be shared to provide memory footprint savings. Pass this container
+  /// to sessions that you would like to share pre-packed buffers of shared initializers at session
+  /// creation time.
+  ///
+  /// \param[out] out Newly created ::OrtPrepackedWeightsContainer. Must be freed with OrtApi::ReleasePrepackedWeightsContainer
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtPrepackedWeightsContainer>> out)>>
       CreatePrepackedWeightsContainer;
 
+  /// \brief Release OrtPrepackedWeightsContainer instance
+  ///
+  /// \note instance must not be released until the sessions using it are released
   external ffi.Pointer<
           ffi.NativeFunction<
               ffi.Void Function(
                   ffi.Pointer<OrtPrepackedWeightsContainer> input)>>
       ReleasePrepackedWeightsContainer;
 
+  /// \brief Create session with prepacked weights container
+  ///
+  /// Same functionality offered by OrtApi::CreateSession except that a container that contains
+  /// pre-packed weights' buffers is written into/read from by the created session.
+  /// This is useful when used in conjunction with OrtApi::AddInitializer which injects
+  /// shared initializer info into sessions. Wherever possible, the pre-packed versions of these
+  /// shared initializers are cached in this container so that multiple sessions can just re-use
+  /// these instead of duplicating these in memory.
+  ///
+  /// \param[in] env OrtEnv instance instance
+  /// \param[in] model_path Null terminated string of the path (wchar on Windows, char otherwise)
+  /// \param[in] options
+  /// \param[in] prepacked_weights_container
+  /// \param[out] out Newly created ::OrtSession. Must be freed with OrtApi::ReleaseSession
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1709,6 +3237,23 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
       CreateSessionWithPrepackedWeightsContainer;
 
+  /// \brief Create session from memory with prepacked weights container
+  ///
+  /// Same functionality offered by OrtApi::CreateSessionFromArray except that a container that contains
+  /// pre-packed weights' buffers is written into/read from by the created session.
+  /// This is useful when used in conjunction with OrtApi::AddInitializer which injects
+  /// shared initializer info into sessions. Wherever possible, the pre-packed versions of these
+  /// shared initializers are cached in this container so that multiple sessions can just re-use
+  /// these instead of duplicating these in memory.
+  ///
+  /// \param[in] env
+  /// \param[in] model_data Array of bytes holding the model
+  /// \param[in] model_data_length Number of bytes in `model_data_model`
+  /// \param[in] options
+  /// \param[in] prepacked_weights_container
+  /// \param[out] out Newly created ::OrtSession. Must be freed with OrtApi::ReleaseSession
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1721,18 +3266,53 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
       CreateSessionFromArrayWithPrepackedWeightsContainer;
 
+  /// \brief Append TensorRT execution provider to the session options
+  ///
+  /// If TensorRT is not available (due to a non TensorRT enabled build), this function will return failure.
+  ///
+  /// This is slightly different from OrtApi::SessionOptionsAppendExecutionProvider_TensorRT, it takes an
+  /// ::OrtTensorRTProviderOptions which is publicly defined. This takes an opaque ::OrtTensorRTProviderOptionsV2
+  /// which must be created with OrtApi::CreateTensorRTProviderOptions.
+  ///
+  /// For OrtApi::SessionOptionsAppendExecutionProvider_TensorRT, the user needs to instantiate ::OrtTensorRTProviderOptions
+  /// as well as allocate/release buffers for some members of ::OrtTensorRTProviderOptions.
+  /// Here, OrtApi::CreateTensorRTProviderOptions and Ortapi::ReleaseTensorRTProviderOptions will do the memory management for you.
+  ///
+  /// \param[in] options
+  /// \param[in] tensorrt_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtTensorRTProviderOptionsV2> tensorrt_options)>>
       SessionOptionsAppendExecutionProvider_TensorRT_V2;
 
+  /// \brief Create an OrtTensorRTProviderOptionsV2
+  ///
+  /// \param[out] out Newly created ::OrtTensorRTProviderOptionsV2. Must be released with OrtApi::ReleaseTensorRTProviderOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtTensorRTProviderOptionsV2>> out)>>
       CreateTensorRTProviderOptions;
 
+  /// \brief Set options in a TensorRT Execution Provider.
+  ///
+  /// Please refer to https://onnxruntime.ai/docs/execution-providers/TensorRT-ExecutionProvider.html#cc
+  /// to know the available keys and values. Key should be in null terminated string format of the member of ::OrtTensorRTProviderOptionsV2
+  /// and value should be its related range. Recreates the options and only sets the supplied values.
+  ///
+  /// For example, key="trt_max_workspace_size" and value="2147483648"
+  ///
+  /// \param[in] tensorrt_options
+  /// \param[in] provider_options_keys Array of UTF-8 null-terminated string for provider options keys
+  /// \param[in] provider_options_values Array of UTF-8 null-terminated string for provider options values
+  /// \param[in] num_keys Number of elements in the `provider_option_keys` and `provider_options_values` arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1741,6 +3321,16 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> UpdateTensorRTProviderOptions;
 
+  /// \brief Get serialized TensorRT provider options string.
+  ///
+  /// For example, "trt_max_workspace_size=2147483648;trt_max_partition_iterations=10;trt_int8_enable=1;......"
+  ///
+  /// \param tensorrt_options - OrtTensorRTProviderOptionsV2 instance
+  /// \param allocator - a ptr to an instance of OrtAllocator obtained with OrtApi::CreateAllocator or OrtApi::GetAllocatorWithDefaultOptions
+  /// the specified allocator will be used to allocate continuous buffers for output strings and lengths.
+  /// \param ptr - is a UTF-8 null terminated string allocated using 'allocator'. The caller is responsible for using the same allocator to free it.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1758,27 +3348,77 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<OrtTensorRTProviderOptionsV2> input)>>
       ReleaseTensorRTProviderOptions;
 
+  /// \brief Enable custom operators
+  ///
+  /// See onnxruntime-extensions: https://github.com/microsoft/onnxruntime-extensions.git
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options)>>
       EnableOrtCustomOps;
 
+  /// \brief Register a custom allocator
+  ///
+  /// Enables sharing between multiple sessions that use the same env instance.
+  /// Returns an error if an allocator with the same ::OrtMemoryInfo is already registered.
+  ///
+  /// The behavior of this is exactly the same as OrtApi::CreateAndRegisterAllocator except
+  /// instead of ORT creating an allocator based on provided info, in this case
+  /// ORT uses the user-provided custom allocator.
+  /// See https://onnxruntime.ai/docs/get-started/with-c.html for details.
+  ///
+  /// \param[in] env
+  /// \param[in] allocator User provided allocator
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtEnv> env,
               ffi.Pointer<OrtAllocator> allocator)>> RegisterAllocator;
 
+  /// \brief Unregister a custom allocator
+  ///
+  /// It is an error if you provide an ::OrtMemoryInfo not corresponding to any
+  /// registered allocators for sharing.
+  ///
+  /// \param[in] env
+  /// \param[in] mem_info
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtEnv> env,
               ffi.Pointer<OrtMemoryInfo> mem_info)>> UnregisterAllocator;
 
+  /// \brief Sets *out to 1 iff an ::OrtValue is a SparseTensor, and 0 otherwise
+  ///
+  /// \param[in] value existing ::OrtValue
+  /// \param[out] out unless an error occurs, contains 1 iff the value contains an instance
+  /// of sparse tensor or 0 otherwise.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Int> out)>>
       IsSparseTensor;
 
+  /// \brief Create an ::OrtValue with a sparse tensor that is empty.
+  ///
+  /// Use FillSparseTensor<Format>() functions to populate sparse tensor with non-zero values and
+  /// format specific indices data.
+  /// Use ReleaseValue to destroy the sparse tensor, this will also release the buffer inside the output value
+  /// if any was allocated.
+  /// \param[in,out] allocator allocator to use when performing an allocation. Allocation will be performed
+  /// by FillSparseTensor<Format>() APIs. The lifespan of the allocator instance must eclipse the lifespan
+  /// this sparse tensor instance as the same allocator will be used to free memory.
+  /// \param[in] dense_shape shape of the original dense tensor
+  /// \param[in] dense_shape_len number of shape dimensions being passed
+  /// \param[in] type must be one of TENSOR_ELEMENT_DATA_TYPE_xxxx
+  /// \param[out] out Should be freed by calling ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1789,6 +3429,21 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
       CreateSparseTensorAsOrtValue;
 
+  /// This fills populates an empty tensor that was created using OrtApi::CreateSparseTensorAsOrtValue.
+  /// This will allocate required memory and copy the supplied NNZ values and COO indices into that memory allocation.
+  /// Memory allocation is performed using the allocator that was specified with OrtApi::CreateSparseTensorAsOrtValue.
+  ///
+  /// \param[in,out] ort_value ::OrtValue to populate with data
+  /// \param[in] data_mem_info serves to identify the location of the data to be copied. If the allocator specified
+  /// at the creation time has memory info that is not the same as mem_info argument to this function a X-device copy will be performed.
+  /// String data is assumed to be on CPU and will only be copied into a CPU allocated buffer.
+  /// \param[in] values_shape pointer to values shape array
+  /// \param[in] values_shape_len length of the values_shape
+  /// \param[in] values pointer to an array of values. For strings, pass const char**.
+  /// \param[in] indices_data pointer to a location of COO indices
+  /// \param[in] indices_num number of COO indices
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1800,6 +3455,23 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> indices_data,
               ffi.Size indices_num)>> FillSparseTensorCoo;
 
+  /// This fills populates an empty tensor that was created using OrtApi::CreateSparseTensorAsOrtValue.
+  /// This will allocate required memory and copy the supplied NNZ values and CSR indices into that memory allocation.
+  /// Memory allocation is performed using the allocator that was specified with OrtApi::CreateSparseTensorAsOrtValue.
+  ///
+  /// \param[in,out] ort_value ::OrtValue to populate with data
+  /// \param[in] data_mem_info serves to identify the location of the data to be copied. If the allocator specified
+  /// at the creation time has memory info that is not the same as mem_info argument to this function a X-device copy will be performed.
+  /// String data is assumed to be on CPU and will only be copied into a CPU allocated buffer.
+  /// \param[in] values_shape pointer to values shape array
+  /// \param[in] values_shape_len length of the values_shape
+  /// \param[in] values - pointer to an array of values. For strings, pass const char**.
+  /// \param[in] inner_indices_data pointer to a location of CSR inner indices
+  /// \param[in] inner_indices_num number of CSR inner indices
+  /// \param[in] outer_indices_data pointer to a location of CSR outer indices
+  /// \param[in] outer_indices_num number of CSR outer indices
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1813,6 +3485,22 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> outer_indices_data,
               ffi.Size outer_indices_num)>> FillSparseTensorCsr;
 
+  /// This fills populates an empty tensor that was created using OrtApi::CreateSparseTensorAsOrtValue.
+  /// This will allocate required memory and copy the supplied NNZ values and BlockSparse indices into that memory allocation.
+  /// Memory allocation is performed using the allocator that was specified with OrtApi::CreateSparseTensorAsOrtValue.
+  ///
+  /// \param[in,out] ort_value ::OrtValue to populate with data
+  /// \param[in] data_mem_info serves to identify the location of the data to be copied. If the allocator specified
+  /// at the creation time has memory info that is not the same as mem_info argument to this function a X-device copy will be performed.
+  /// String data is assumed to be on CPU and will only be copied into a CPU allocated buffer.
+  /// \param[in] values_shape
+  /// \param[in] values_shape_len
+  /// \param[in] values structure with values information
+  /// \param[in] indices_shape_data pointer to a location of indices shape
+  /// \param[in] indices_shape_len length of the block sparse indices shape
+  /// \param[in] indices_data pointer to a location of indices data. Shape will determine the length of the indices data.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1826,6 +3514,28 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Int32> indices_data)>>
       FillSparseTensorBlockSparse;
 
+  /// Create an ::OrtValue with a sparse tensor. This is the first step.
+  /// Next, use Use<Format>Indices() functions to supply sparse tensor with
+  /// format specific indices data and set its sparse format to a specific enum value.
+  /// This will not perform memory allocations. It will
+  /// use supplied user buffer which should outlive the created sparse tensor.
+  /// Use OrtApi::ReleaseValue to destroy the sparse tensor. It would not release the supplied values buffer.
+  /// This function can not be used to map strings from the user allocated memory. Strings must always be copied
+  /// and have UTF-8 encoding. Therefore, use OrtApi::CreateSparseTensorAsOrtValue above and then fill it with data
+  /// using appropriate Make*() function.
+  ///
+  /// \param[in] info memory info where sparse values reside.
+  /// \param[in,out] p_data pointer to a user allocated buffer with values. To create a full sparse tensor with no non-zero
+  /// values, pass nullptr
+  /// \param[in] dense_shape shape of the original dense tensor
+  /// \param[in] dense_shape_len number of shape dimensions being passed
+  /// \param[in] values_shape shape of the values data. To create a fully sparse tensor with no non-zero values,
+  /// pass {0} shape.
+  /// \param[in] values_shape_len number of values shape dimensions
+  /// \param[in] type must be one of TENSOR_ELEMENT_DATA_TYPE_xxxx
+  /// \param[out] out Should be freed by calling ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1839,6 +3549,18 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
       CreateSparseTensorWithValuesAsOrtValue;
 
+  /// This assigns Coo format indices to the SparseTensor that was created by
+  /// OrtApi::CreateSparseTensorWithValuesAsOrtValue above. It also sets OrtSparseFormat to
+  /// ORT_SPARSE_COO. This will not allocate any additional memory for data. The life span of
+  /// indices_data buffer should eclipse the life span of this ::OrtValue.
+  ///
+  /// \param[in,out] ort_value ::OrtValue instance constructed with OrtApi::CreateSparseTensorWithValuesAsOrtValue
+  /// \param[in,out] indices_data pointer to a user pre-allocated buffer or nullptr for fully sparse tensors.
+  /// \param[in] indices_num  number of COO indices. Should either be 0 for fully sparse tensors, be equal
+  /// to the number of nnz values specified to OrtApi::CreateSparseTensorWithValuesAsOrtValue for 1-D {nnz} indices or
+  /// be twice as number of nnz values for a  2-D indices {nnz, 2}
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1846,6 +3568,20 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> indices_data,
               ffi.Size indices_num)>> UseCooIndices;
 
+  /// The assigns CSR format indices to the SparseTensor that was created by
+  /// OrtApi::CreateSparseTensorWithValuesAsOrtValue above. It also sets OrtSparseFormat to
+  /// ORT_SPARSE_CSRC. This will not allocate any additional memory for data. The life spans of
+  /// inner_data and outer_data buffers should eclipse the life span of this ::OrtValue.
+  ///
+  /// \param[in,out] ort_value ::OrtValue instance constructed with OrtApi::CreateSparseTensorWithValuesAsOrtValue
+  /// \param[in,out] inner_data pointer to a user pre-allocated buffer or nullptr for fully sparse tensors.
+  /// \param[in] inner_num  number of inner CSR indices. Should either be 0 for fully sparse tensors or be equal
+  /// to the number of nnz values specified to OrtApi::CreateSparseTensorWithValuesAsOrtValue.
+  /// \param[in,out] outer_data pointer to user pre-allocated buffer or nullptr for fully sparse tensors.
+  /// \param[in] outer_num number of CSR outer indices. Should either be 0 for fully sparse tensors or
+  /// equal to rows + 1 of the dense shape.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1855,6 +3591,17 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Int64> outer_data,
               ffi.Size outer_num)>> UseCsrIndices;
 
+  /// The assigns BlockSparse format indices to the SparseTensor that was created by
+  /// OrtApi::CreateSparseTensorWithValuesAsOrtValue above. It also sets OrtSparseFormat to
+  /// ORT_SPARSE_BLOCK_SPARSE. This will not allocate any additional memory for data. The life span of
+  /// indices_data buffer must eclipse the lifespan of this ::OrtValue.
+  ///
+  /// \param[in,out] ort_value OrtValue instance constructed with OrtApi::CreateSparseTensorWithValuesAsOrtValue
+  /// \param[in] indices_shape pointer to indices shape. Use {0} for fully sparse tensors
+  /// \param[in] indices_shape_len length of the indices shape
+  /// \param[in,out] indices_data pointer to user pre-allocated buffer or nullptr for fully sparse tensors.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1863,23 +3610,49 @@ class OrtApi extends ffi.Struct {
               ffi.Size indices_shape_len,
               ffi.Pointer<ffi.Int32> indices_data)>> UseBlockSparseIndices;
 
+  /// \brief Returns sparse tensor format enum iff a given ort value contains an instance of sparse tensor.
+  ///
+  /// \param[in] ort_value ::OrtValue that contains an instance of sparse tensor
+  /// \param[out] out pointer to out parameter
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtValue> ort_value, ffi.Pointer<ffi.Int32> out)>>
       GetSparseTensorFormat;
 
+  /// \brief Returns data type and shape of sparse tensor values (nnz) iff ::OrtValue contains a SparseTensor.
+  ///
+  /// \param[in] ort_value An ::OrtValue that contains a fully constructed sparse tensor
+  /// \param[out] out Must be freed by OrtApi::ReleaseTensorTypeAndShapeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtValue> ort_value,
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> out)>>
       GetSparseTensorValuesTypeAndShape;
 
+  /// \brief Returns numeric data for sparse tensor values (nnz). For string values use GetStringTensor*().
+  ///
+  /// \param[in] ort_value an instance of ::OrtValue containing sparse tensor
+  /// \param[out] out returns a pointer to values data.  Do not attempt to free this ptr.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtValue> ort_value,
               ffi.Pointer<ffi.Pointer<ffi.Void>> out)>> GetSparseTensorValues;
 
+  /// \brief Returns data type, shape for the type of indices specified by indices_format.
+  ///
+  /// \param[in] ort_value ::OrtValue containing sparse tensor.
+  /// \param[in] indices_format One of the indices formats. It is an error to request a format that the sparse
+  /// tensor does not contain.
+  /// \param[out] out an instance of ::OrtTensorTypeAndShapeInfo. Must be freed by OrtApi::ReleaseTensorTypeAndShapeInfo
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1888,6 +3661,14 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> out)>>
       GetSparseTensorIndicesTypeShape;
 
+  /// \brief Returns indices data for the type of the indices specified by indices_format
+  ///
+  /// \param[in] ort_value ::OrtValue containing sparse tensor.
+  /// \param[in] indices_format One of the indices formats. It is an error to request a format that the sparse tensor does not contain.
+  /// \param[out] num_indices Pointer to where the number of indices entries is returned
+  /// \param[out] indices Returned pointer to the indices data. Do not free the returned pointer as it refers to internal data owned by the ::OrtValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1897,23 +3678,65 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> indices)>>
       GetSparseTensorIndices;
 
+  /// \brief Sets out to 1 iff an optional type OrtValue has an element, 0 otherwise (OrtValue is None)
+  /// Use this API to find if the optional type OrtValue is None or not.
+  /// If the optional type OrtValue is not None, use the OrtValue just like any other OrtValue.
+  /// For example, if you get an OrtValue that corresponds to Optional(tensor) and
+  /// if HasValue() returns true, use it as tensor and so on.
+  ///
+  /// \param[in] value Input OrtValue.
+  /// \param[out] out indicating if the input OrtValue contains data (1) or if it is a None (0)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
               ffi.Pointer<OrtValue> value, ffi.Pointer<ffi.Int> out)>> HasValue;
 
+  /// \brief Used for custom operators, gets the GPU compute stream to use to launch the custom a GPU kernel
+  /// \see ::OrtCustomOp
+  /// \param[in]  context OrtKernelContext instance
+  /// \param[out] out Returns pointer to a GPU compute stream that can be used to launch the custom GPU kernel.
+  /// If retrieving the GPU compute stream is not relevant (GPU not enabled in the build, kernel partitioned to
+  /// some other EP), then a nullptr is returned as the output param.
+  /// Do not free or mutate the returned pointer as it refers to internal data owned by the underlying session.
+  /// Only use it for custom kernel launching.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtKernelContext> context,
                   ffi.Pointer<ffi.Pointer<ffi.Void>> out)>>
       KernelContext_GetGPUComputeStream;
 
+  /// @}
+  /// \name GetTensorMemoryInfo
+  /// @{
+  ///   /** \brief Returns a pointer to the ::OrtMemoryInfo of a Tensor
+  ///    * \param[in] value ::OrtValue containing tensor.
+  ///    * \param[out] mem_info ::OrtMemoryInfo of the tensor. Do NOT free the returned pointer. It is valid for the lifetime of the ::OrtValue
+  ///    *
+  ///    * \snippet{doc} snippets.dox OrtStatus Return Value
+  ///    */
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtValue> value,
                   ffi.Pointer<ffi.Pointer<OrtMemoryInfo>> mem_info)>>
       GetTensorMemoryInfo;
 
+  /// @}
+  /// \name GetExecutionProviderApi
+  /// @{
+  ///   /** \brief Get a pointer to the requested version of the Execution Provider specific
+  ///    * API extensions to the OrtApi
+  ///    * \param[in] provider_name The name of the execution provider name. Currently only the following
+  ///    * values are supported: "DML".
+  ///    * \param[in] version Must be ::ORT_API_VERSION.
+  ///    * \param[out] provider_api A void pointer containing a reference to the execution provider versioned api structure.
+  ///    * For example, the provider_api pointer can be cast to the OrtDmlApi* when the provider_name is "DML".
+  ///    *
+  ///    * \snippet{doc} snippets.dox OrtStatus Return Value
+  ///    */
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -1922,64 +3745,161 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> provider_api)>>
       GetExecutionProviderApi;
 
+  /// \name SessionOptions
+  /// @{
+  ///   /** \brief Set custom thread creation function
+  ///    *
+  ///    * \param[in] options Session options
+  ///    * \param[in] ort_custom_create_thread_fn Custom thread creation function
+  ///    *
+  ///    * \snippet{doc} snippets.dox OrtStatus Return Value
+  ///    */
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   OrtCustomCreateThreadFn ort_custom_create_thread_fn)>>
       SessionOptionsSetCustomCreateThreadFn;
 
+  /// \brief Set creation options for custom thread
+  ///
+  /// \param[in] options Session options
+  /// \param[in] ort_custom_thread_creation_options Custom thread creation options (can be nullptr)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<ffi.Void> ort_custom_thread_creation_options)>>
       SessionOptionsSetCustomThreadCreationOptions;
 
+  /// \brief Set custom thread join function
+  ///
+  /// \param[in] options Session options
+  /// \param[in] ort_custom_join_thread_fn Custom join thread function, must not be nullptr when ort_custom_create_thread_fn is set
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   OrtCustomJoinThreadFn ort_custom_join_thread_fn)>>
       SessionOptionsSetCustomJoinThreadFn;
 
+  /// \name OrtThreadingOptions
+  /// @{
+  ///   /** \brief Set custom thread creation function for global thread pools
+  ///    *
+  ///    * \param[inout] tp_options
+  ///    * \param[in] ort_custom_create_thread_fn Custom thread creation function
+  ///    *
+  ///    * \snippet{doc} snippets.dox OrtStatus Return Value
+  ///    */
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
                   OrtCustomCreateThreadFn ort_custom_create_thread_fn)>>
       SetGlobalCustomCreateThreadFn;
 
+  /// \brief Set custom thread creation options for global thread pools
+  ///
+  /// \param[inout] tp_options
+  /// \param[in] ort_custom_thread_creation_options Custom thread creation options (can be nullptr)
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
                   ffi.Pointer<ffi.Void> ort_custom_thread_creation_options)>>
       SetGlobalCustomThreadCreationOptions;
 
+  /// \brief Set custom thread join function for global thread pools
+  ///
+  /// \param[inout] tp_options
+  /// \param[in] ort_custom_join_thread_fn Custom thread join function, must not be nullptr when global ort_custom_create_thread_fn is set
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
                   OrtCustomJoinThreadFn ort_custom_join_thread_fn)>>
       SetGlobalCustomJoinThreadFn;
 
+  /// \brief Synchronize bound inputs. The call may be necessary for some providers, such as cuda,
+  /// in case the system that allocated bound memory operated on a different stream. However, the
+  /// operation is provider specific and could be a no-op.
+  ///
+  /// \param[inout] binding_ptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtIoBinding> binding_ptr)>>
       SynchronizeBoundInputs;
 
+  /// \brief Synchronize bound outputs. The call may be necessary for some providers, such as cuda,
+  /// in case the system that allocated bound memory operated on a different stream. However, the
+  /// operation is provider specific and could be a no-op.
+  ///
+  /// \param[inout] binding_ptr
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtIoBinding> binding_ptr)>>
       SynchronizeBoundOutputs;
 
+  /// \brief Append CUDA execution provider to the session options
+  ///
+  /// If CUDA is not available (due to a non CUDA enabled build), this function will return failure.
+  ///
+  /// This is slightly different from OrtApi::SessionOptionsAppendExecutionProvider_CUDA, it takes an
+  /// ::OrtCUDAProviderOptions which is publicly defined. This takes an opaque ::OrtCUDAProviderOptionsV2
+  /// which must be created with OrtApi::CreateCUDAProviderOptions.
+  ///
+  /// For OrtApi::SessionOptionsAppendExecutionProvider_CUDA, the user needs to instantiate ::OrtCUDAProviderOptions
+  /// as well as allocate/release buffers for some members of ::OrtCUDAProviderOptions.
+  /// Here, OrtApi::CreateCUDAProviderOptions and Ortapi::ReleaseCUDAProviderOptions will do the memory management for you.
+  ///
+  /// \param[in] options
+  /// \param[in] cuda_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.11.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtCUDAProviderOptionsV2> cuda_options)>>
       SessionOptionsAppendExecutionProvider_CUDA_V2;
 
+  /// \brief Create an OrtCUDAProviderOptionsV2
+  ///
+  /// \param[out] out Newly created ::OrtCUDAProviderOptionsV2. Must be released with OrtApi::ReleaseCudaProviderOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.11.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtCUDAProviderOptionsV2>> out)>>
       CreateCUDAProviderOptions;
 
+  /// \brief Set options in a CUDA Execution Provider.
+  ///
+  /// Please refer to https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html#configuration-options
+  /// to know the available keys and values. Key should be in null terminated string format of the member of ::OrtCUDAProviderOptionsV2
+  /// and value should be its related range. Recreates the options and only sets the supplied values.
+  ///
+  /// For example, key="device_id" and value="0"
+  ///
+  /// \param[in] cuda_options
+  /// \param[in] provider_options_keys Array of UTF-8 null-terminated string for provider options keys
+  /// \param[in] provider_options_values Array of UTF-8 null-terminated string for provider options values
+  /// \param[in] num_keys Number of elements in the `provider_option_keys` and `provider_options_values` arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.11.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -1988,6 +3908,18 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> UpdateCUDAProviderOptions;
 
+  /// Get serialized CUDA provider options string.
+  ///
+  /// For example, "device_id=0;arena_extend_strategy=0;......"
+  ///
+  /// \param cuda_options - OrtCUDAProviderOptionsV2 instance
+  /// \param allocator - a ptr to an instance of OrtAllocator obtained with CreateAllocator() or GetAllocatorWithDefaultOptions()
+  /// the specified allocator will be used to allocate continuous buffers for output strings and lengths.
+  /// \param ptr - is a UTF-8 null terminated string allocated using 'allocator'. The caller is responsible for using the same allocator to free it.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.11.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2006,12 +3938,42 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtCUDAProviderOptionsV2> input)>>
       ReleaseCUDAProviderOptions;
 
+  /// \brief Append MIGraphX provider to session options
+  ///
+  /// If MIGraphX is not available (due to a non MIGraphX enabled build, or if MIGraphX is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] migraphx_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.11.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtMIGraphXProviderOptions> migraphx_options)>>
       SessionOptionsAppendExecutionProvider_MIGraphX;
 
+  /// \brief Replace initialized Tensors with external data with the data provided in initializers.
+  ///
+  /// The function will find the initialized TensorProtos with external data in the graph with the provided names and
+  /// replace them with the provided tensors. The API verifies that the TensorProto being replaced
+  /// has an external data reference and has the same name, dimensions and data type as its replacement. The replacement
+  /// will occur before any of the optimizations take place. The data will be copied into the graph
+  /// since TensorProto can't refer to the user provided buffers.
+  ///
+  /// Once the model has been loaded, the OrtValue(s) added to SessionOptions instance will be removed
+  /// from the internal SessionOptions copy to save memory, the user provided buffers can then be deallocated
+  /// and the SessionOptions instance that refers to them can be destroyed.
+  ///
+  /// \param[in] options
+  /// \param[in] initializer_names Array of null terminated UTF-8 encoded strings of the initializers names.
+  /// \param[in] initializers Array of ::OrtValue type
+  /// \param[in] num_initializers Number of elements in the initializer_names and initializers
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2020,6 +3982,15 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<OrtValue>> initializers,
               ffi.Size num_initializers)>> AddExternalInitializers;
 
+  /// \brief: Create attribute of onnxruntime operator
+  ///
+  /// \param[in] name Name of the attribute
+  /// \param[in] data Data content of the attribute
+  /// \param[in] len Number of bytes stored in data
+  /// \param[in] type Data type
+  /// \param[out] op_attr Attribute that has been created, which must be released by OrtApi::ReleaseOpAttr
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2029,10 +4000,31 @@ class OrtApi extends ffi.Struct {
               ffi.Int32 type,
               ffi.Pointer<ffi.Pointer<OrtOpAttr>> op_attr)>> CreateOpAttr;
 
+  /// \brief: Release op attribute
+  ///
+  /// \param[in] opAttr Attribute created by OrtApi::CreateOpAttr
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
           ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtOpAttr> input)>>
       ReleaseOpAttr;
 
+  /// \brief: Create onnxruntime native operator
+  ///
+  /// \param[in] info Kernel info
+  /// \param[in] op_name Operator name
+  /// \param[in] domain Operator domain
+  /// \param[in] version Operator opset version
+  /// \param[in] type_constraint_names Name of the type contraints, such as "T" or "T1"
+  /// \param[in] type_constraint_values Type of each contraints
+  /// \param[in] type_constraint_count Number of contraints
+  /// \param[in] attr_values Attributes used to initialize the operator
+  /// \param[in] attr_count Number of the attributes
+  /// \param[in] input_count Number of inputs
+  /// \param[in] output_count Number of outputs
+  /// \param[out] ort_op Operator that has been created
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2049,6 +4041,17 @@ class OrtApi extends ffi.Struct {
               ffi.Int output_count,
               ffi.Pointer<ffi.Pointer<OrtOp>> ort_op)>> CreateOp;
 
+  /// \brief: Invoke the operator created by OrtApi::CreateOp
+  /// The inputs must follow the order as specified in onnx specification
+  ///
+  /// \param[in] context Kernel context
+  /// \param[in] ort_op Operator that has been created
+  /// \param[in] input_values Array of inputs
+  /// \param[in] input_count Number of inputs
+  /// \param[in] output_values Array of outputs
+  /// \param[in] output_count Number of outputs
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2059,10 +4062,118 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<OrtValue>> output_values,
               ffi.Int output_count)>> InvokeOp;
 
+  /// \brief: Release an onnxruntime operator
+  ///
+  /// \param[in] Op Operator created by OrtApi::CreateOp
+  ///
+  /// \since Version 1.12.
   external ffi
       .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtOp> input)>>
       ReleaseOp;
 
+  /// \brief: Append execution provider to the session options.
+  /// \param[in] options
+  /// \param[in] provider_name - provider to add.
+  /// \param[in] provider_options_keys - keys to configure the provider options
+  /// \param[in] provider_options_values - values to configure the provider options
+  /// \param[in] num_keys - number of keys passed in
+  ///
+  /// Currently supported provider names:
+  /// QNNExecutionProvider (or QNN)
+  /// OpenVINOExecutionProvider (or OpenVINO)
+  /// XnnpackExecutionProvider (or XNNPACK)
+  /// WebNNExecutionProvider (or WEBNN)
+  /// WebGpuExecutionProvider (or WebGPU)
+  /// AzureExecutionProvider (or AZURE)
+  /// JsExecutionProvider (or JS)
+  /// VitisAIExecutionProvider (or VitisAI)
+  /// CoreMLExecutionProvider (or CoreML)
+  ///
+  /// Note: If an execution provider has a dedicated SessionOptionsAppendExecutionProvider_<provider name> function
+  /// that should be used to add it.
+  ///
+  /// QNN supported keys:
+  /// "backend_type": Type of QNN backend. Specifies a backend path that is the associated QNN backend library file
+  /// name. E.g., given backend type "htp", on Windows, the backend path would be "QnnHtp.dll", and on other
+  /// platforms, it would be "libQnnHtp.so". Mutually exclusive with "backend_path".
+  /// Available options:
+  /// -# "cpu"
+  /// -# "gpu"
+  /// -# "htp": Default.
+  /// -# "saver"
+  /// "backend_path": File path to QNN backend library. Mutually exclusive with "backend_type".
+  /// "profiling_level": QNN profiling level.
+  /// Available options:
+  /// -# "off": Default.
+  /// -# "basic"
+  /// -# "detailed"
+  /// "profiling_file_path": QNN profiling file path if ETW not enabled.
+  /// "rpc_control_latency": QNN RPC control latency.
+  /// "vtcm_mb": QNN VTCM size in MB. default to 0(not set).
+  /// "htp_performance_mode": QNN performance mode.
+  /// Available options:
+  /// -# "burst"
+  /// -# "balanced"
+  /// -# "default": Default.
+  /// -# "high_performance"
+  /// -# "high_power_saver"
+  /// -# "low_balanced"
+  /// -# "extreme_power_saver"
+  /// -# "low_power_saver"
+  /// -# "power_saver"
+  /// -# "sustained_high_performance"
+  /// "qnn_saver_path": File path to the QNN Saver backend library. If specified, QNN Saver will be enabled and will
+  /// dump QNN API calls to disk for replay/debugging. QNN Saver produces incorrect model inference results and
+  /// may alter model/EP partitioning. Use only for debugging.
+  /// "qnn_context_priority": QNN context priority.
+  /// Available options:
+  /// -# "low"
+  /// -# "normal": Default.
+  /// -# "normal_high"
+  /// -# "high"
+  /// "htp_graph_finalization_optimization_mode": Set the optimization mode for graph finalization on the HTP backend.
+  /// Available options:
+  /// -# "0": Default.
+  /// -# "1": Faster preparation time, less optimal graph.
+  /// -# "2": Longer preparation time, more optimal graph.
+  /// -# "3": Longest preparation time, most likely even more optimal graph. See QNN SDK documentation for specific
+  /// details.
+  /// "soc_model": The SoC model number. Refer to the QNN SDK documentation for valid values.
+  /// Defaults to "0" (unknown).
+  /// "htp_arch": The minimum HTP architecture the driver will use to select compatible QNN operators.
+  /// Available options:
+  /// -# "0": Default (none).
+  /// -# "68"
+  /// -# "69"
+  /// -# "73"
+  /// -# "75"
+  /// "device_id": The ID of the device to use when setting 'htp_arch'. Defaults to "0" (for single device).
+  /// "enable_htp_fp16_precision": Used for float32 model for HTP backend.
+  /// Enable the float32 model to be inferenced with fp16 precision. Otherwise, it will be fp32 precision.
+  /// -# "0": With fp32 precision.
+  /// -# "1": Default. With fp16 precision.
+  /// "offload_graph_io_quantization": Offload graph input quantization and graph output dequantization to another
+  /// execution provider (typically CPU EP).
+  /// -# "0": Disabled. QNN EP will handle quantization and dequantization of graph I/O.
+  /// -# "1": Enabled. This is the default value.
+  /// "enable_htp_spill_fill_buffer": Enable HTP spill fill buffer setting. The flag is used while generating context
+  /// binary.
+  /// -# "0": Default. Disabled.
+  /// -# "1": Enabled.
+  /// "enable_htp_shared_memory_allocator": Enable the QNN HTP shared memory allocator. Requires libcdsprpc.so/dll to
+  /// be available.
+  /// -# "0": Default. Disabled.
+  /// -# "1": Enabled.
+  /// "dump_json_qnn_graph": Set to "1" to dump QNN graphs generated by QNN EP as JSON files. Each graph partition
+  /// assigned to QNN EP is dumped to a separate file.
+  /// "json_qnn_graph_dir": Directory in which to dump QNN JSON graphs. If not specified, QNN graphs are dumped in the
+  /// program's current working directory. Ignored if "dump_json_qnn_graph" is not set.
+  ///
+  /// XNNPACK supported keys:
+  /// "intra_op_num_threads": number of thread-pool size to use for XNNPACK execution provider.
+  /// default value is 0, which means to use the session thread-pool size.
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2072,12 +4183,23 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> SessionOptionsAppendExecutionProvider;
 
+  /// \brief: Get a copy of kernel info
+  ///
+  /// \param[in] info Kernel info
+  /// \param[out] info_copy Copy of kernel info
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtKernelInfo> info,
                   ffi.Pointer<ffi.Pointer<OrtKernelInfo>> info_copy)>>
       CopyKernelInfo;
 
+  /// \brief: Release kernel info
+  ///
+  /// \param[in] KernelInfo A copy of kernel info returned by CopyKernelInfo
+  ///
+  /// \since Version 1.12.
   external ffi.Pointer<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<OrtKernelInfo> input)>>
@@ -2104,18 +4226,45 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<OrtTrainingApi> Function(ffi.Uint32 version)>>
       GetTrainingApi;
 
+  /// \brief Append CANN provider to session options
+  ///
+  /// If CANN is not available (due to a non CANN enabled build, or if CANN is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] cann_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.13.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtCANNProviderOptions> cann_options)>>
       SessionOptionsAppendExecutionProvider_CANN;
 
+  /// \brief Create an OrtCANNProviderOptions
+  ///
+  /// \param[out] out created ::OrtCANNProviderOptions. Must be released with OrtApi::ReleaseCANNProviderOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.13.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtCANNProviderOptions>> out)>>
       CreateCANNProviderOptions;
 
+  /// \brief Set options in a CANN Execution Provider.
+  ///
+  /// \param[in] cann_options
+  /// \param[in] provider_options_keys Array of UTF-8 null-terminated string for provider options keys
+  /// \param[in] provider_options_values Array of UTF-8 null-terminated string for provider options values
+  /// \param[in] num_keys Number of elements in the `provider_option_keys` and `provider_options_values` arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.13.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2124,6 +4273,18 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> UpdateCANNProviderOptions;
 
+  /// \brief Get serialized CANN provider options string.
+  ///
+  /// \param[in] cann_options OrtCANNProviderOptions instance
+  /// \param[in] allocator a ptr to an instance of OrtAllocator obtained with CreateAllocator()
+  /// or GetAllocatorWithDefaultOptions(), the specified allocator will be used to allocate
+  /// continuous buffers for output strings and lengths.
+  /// \param[out] ptr is a UTF-8 null terminated string allocated using 'allocator'.
+  /// The caller is responsible for using the same allocator to free it.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.13.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2134,7 +4295,7 @@ class OrtApi extends ffi.Struct {
 
   /// \brief Release an OrtCANNProviderOptions
   ///
-  /// \param[in] the pointer of OrtCANNProviderOptions which will been deleted
+  /// \param[in] input The pointer of OrtCANNProviderOptions which will been deleted
   ///
   /// \since Version 1.13.
   external ffi.Pointer<
@@ -2151,41 +4312,148 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<OrtMemoryInfo> ptr, ffi.Pointer<ffi.Int32> out)>>
       MemoryInfoGetDeviceType;
 
+  /// \brief Update the OrtEnv instance with custom log severity level
+  ///
+  /// \param[in] ort_env The OrtEnv instance being used
+  /// \param[in] log_severity_level The log severity level.
+  ///
+  /// \since Version 1.14.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtEnv> ort_env, ffi.Int32 log_severity_level)>>
       UpdateEnvWithCustomLogLevel;
 
+  /// \brief Set affinities for intra op threads
+  ///
+  /// Affinity string follows format:
+  /// logical_processor_id,logical_processor_id;logical_processor_id,logical_processor_id
+  /// Semicolon isolates configurations among threads, while comma split processors where ith thread expected to attach to.
+  /// e.g. 1,2,3;4,5
+  /// specifies affinities for two threads, with the 1st thread attach to the 1st, 2nd, and 3rd processor, and 2nd thread to the 4th and 5th.
+  /// To ease the configuration, an "interval" is also allowed:
+  /// e.g. 1-8;8-16;17-24
+  /// orders that the 1st thread runs on first eight processors, 2nd thread runs on next eight processors, and so forth.
+  /// Note:
+  /// 1. Once set, the number of thread affinities must equal to intra_op_num_threads - 1,
+  /// ort does not set affinity on the main thread which is started and managed by the calling app;
+  /// 2. For windows, ort will infer the group id from a logical processor id, for example, assuming there are two groups with each has 64 logical processors,
+  /// an id of 64 will be inferred as the last processor of the 1st group, while 65 will be interpreted as the 1st processor of the second group.
+  /// Hence 64-65 is an invalid configuration, because a windows thread cannot be attached to processors across group boundary.
+  ///
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtThreadingOptions> tp_options,
                   ffi.Pointer<ffi.Char> affinity_string)>>
       SetGlobalIntraOpThreadAffinity;
 
+  /// \brief Register custom ops from a shared library.
+  ///
+  /// Loads a shared library (.dll on windows, .so on linux, etc) named 'library_name' and looks for this entry point:
+  /// OrtStatus* RegisterCustomOps(OrtSessionOptions * options, const OrtApiBase* api);
+  /// It then passes in the provided session options to this function along with the api base.
+  ///
+  /// The handle to the loaded library is automatically released by ORT when the last OrtSession that references the
+  /// library handle is released. If no OrtSession is created, then the library handle is released when the provided
+  /// OrtSessionOptions is released.
+  ///
+  /// \param[in] options The session options.
+  /// \param[in] library_name The name of the shared library to load and register. Refer to OS-specific dynamic library
+  /// loading utilities (e.g., LoadLibraryEx on Windows or dlopen on Linux/MacOS) for information
+  /// on the format of library names and search paths.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
               ffi.Pointer<ffi.Char> library_name)>> RegisterCustomOpsLibrary_V2;
 
+  /// \brief Register custom ops by calling a RegisterCustomOpsFn function.
+  ///
+  /// Searches for registration_func_name and if found calls it.
+  ///
+  /// The library containing the function must either be linked against or previously loaded by the executable.
+  ///
+  /// If you want ONNX Runtime to load the library and manage its lifetime, use RegisterCustomOpsLibrary_V2.
+  ///
+  /// RegisterCustomOpsUsingFunction can be used in scenarios where it may not be possible for ONNX Runtime to load
+  /// the library from a path. e.g. mobile platforms where the library must be linked into the app.
+  ///
+  /// The registration function must have the signature of RegisterCustomOpsFn:
+  /// OrtStatus* (*fn)(OrtSessionOptions* options, const OrtApiBase* api);
+  ///
+  /// See https://onnxruntime.ai/docs/reference/operators/add-custom-op.html for details on how the registration
+  /// function should be implemented.
+  ///
+  /// \param[in] options OrtSessionOptions that is passed through as the first argument in the call to the
+  /// registration function.
+  /// \param[in] registration_func_name Name of registration function to use.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<ffi.Char> registration_func_name)>>
       RegisterCustomOpsUsingFunction;
 
+  /// \brief Get the number of inputs from ::OrtKernelInfo.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query the number of inputs
+  /// during kernel/session creation.
+  ///
+  /// \param[in] info Instance of ::OrtKernelInfo.
+  /// \param[out] out Pointer to variable assigned with the result on success.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtKernelInfo> info, ffi.Pointer<ffi.Size> out)>>
       KernelInfo_GetInputCount;
 
+  /// \brief Get the number of outputs from ::OrtKernelInfo.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query the number of outputs
+  /// during kernel/session creation.
+  ///
+  /// \param[in] info Instance of ::OrtKernelInfo.
+  /// \param[out] out Pointer to variable assigned with the result on success.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtKernelInfo> info, ffi.Pointer<ffi.Size> out)>>
       KernelInfo_GetOutputCount;
 
+  /// \brief Get the name of a ::OrtKernelInfo's input.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query an input's name
+  /// during kernel/session creation.
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the size of the name
+  /// string (including null-terminator), and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the name string's size,
+  /// the value of `size` is set to the true size of the string (including null-terminator),
+  /// the provided memory is filled with the string's contents, and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual string's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the string
+  /// and a failure status is returned.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[in] index The index of the input name to get. Returns a failure status if out-of-bounds.
+  /// \param[out] out Memory location into which to write the UTF-8 null-terminated string representing the input's name.
+  /// \param[in,out] size Pointer to the size of the `out` buffer. See above comments for details.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2194,6 +4462,30 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfo_GetInputName;
 
+  /// \brief Get the name of a ::OrtKernelInfo's output.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query an output's name
+  /// during kernel/session creation.
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the size of the name
+  /// string (including null-terminator), and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the name string's size,
+  /// the value of `size` is set to the true size of the string (including null-terminator),
+  /// the provided memory is filled with the string's contents, and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual string's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the string
+  /// and a failure status is returned.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[in] index The index of the output name to get. Returns a failure status if out-of-bounds.
+  /// \param[out] out Memory location into which to write the UTF-8 null-terminated string representing the output's
+  /// name.
+  /// \param[in,out] size Pointer to the size of the `out` buffer. See above comments for details.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2202,6 +4494,17 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfo_GetOutputName;
 
+  /// \brief Get the type information for a ::OrtKernelInfo's input.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query the shape and type information
+  /// of an input during kernel/session creation.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[in] index Which input to get the type information for
+  /// \param[out] type_info Pointer set to the resulting ::OrtTypeInfo. Must be freed with OrtApi::ReleaseTypeInfo.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2210,6 +4513,17 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       KernelInfo_GetInputTypeInfo;
 
+  /// \brief Get the type information for a ::OrtKernelInfo's output.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to query the shape and type information
+  /// of an output during kernel/session creation.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[in] index Which input to get the type information for
+  /// \param[out] type_info Pointer set to the resulting ::OrtTypeInfo. Must be freed with OrtApi::ReleaseTypeInfo.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2218,6 +4532,17 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
       KernelInfo_GetOutputTypeInfo;
 
+  /// \brief Get a ::OrtValue tensor stored as an attribute in the graph node.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to get a tensor attribute.
+  ///
+  /// \param[in] info ::OrtKernelInfo instance.
+  /// \param[in] name UTF-8 null-terminated string representing the attribute's name.
+  /// \param[in] allocator Allocator used to allocate the internal tensor state.
+  /// \param[out] out Returns newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue,
+  /// which will also free internal tensor state allocated with the provided allocator.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2227,6 +4552,20 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
       KernelInfoGetAttribute_tensor;
 
+  /// \brief Checks if the given session configuration entry exists.
+  ///
+  /// The config_key formats are defined in onnxruntime_session_options_config_keys.h
+  ///
+  /// Can be used in a custom operator library to check for session configuration entries
+  /// that target one or more custom operators in the library. Example: The config entry
+  /// custom_op.myop.some_key targets a custom op named "myop".
+  ///
+  /// \param[in] options The ::OrtSessionOptions instance.
+  /// \param[in] config_key A null-terminated UTF-8 string representation of the configuration key.
+  /// \param[out] out Pointer set to 1 if the entry exists and 0 otherwise.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2234,6 +4573,33 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> config_key,
               ffi.Pointer<ffi.Int> out)>> HasSessionConfigEntry;
 
+  /// \brief Get a session configuration value.
+  ///
+  /// Returns a failure status if the configuration key does not exist.
+  /// The config_key and the format of config_value are defined in onnxruntime_session_options_config_keys.h
+  ///
+  /// If `config_value` is nullptr, the value of `size` is set to the true size of the string
+  /// value (including null-terminator), and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the actual string value's size,
+  /// the value of `size` is set to the true size of the string value, the provided memory
+  /// is filled with the value's contents, and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual string value's size and `config_value`
+  /// is not nullptr, the value of `size` is set to the true size of the string value
+  /// and a failure status is returned.
+  ///
+  /// Can be used in a custom operator library to get session configuration entries
+  /// that target one or more custom operators in the library. Example: The config entry
+  /// custom_op.myop.some_key targets a custom op named "myop".
+  ///
+  /// \param[in] options The session options.
+  /// \param[in] config_key A null-terminated UTF-8 string representation of the config key.
+  /// \param[in] config_value Pointer to memory where the null-terminated UTF-8 string value will be stored.
+  /// \param[in,out] size Pointer to the size of the `config_value` buffer. See above comments for details.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.14
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2242,18 +4608,50 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> config_value,
               ffi.Pointer<ffi.Size> size)>> GetSessionConfigEntry;
 
+  /// \brief Append dnnl provider to session options
+  ///
+  /// If oneDNN is not available, this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] dnnl_options
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> options,
                   ffi.Pointer<OrtDnnlProviderOptions> dnnl_options)>>
       SessionOptionsAppendExecutionProvider_Dnnl;
 
+  /// \brief Create an OrtDnnlProviderOptions
+  ///
+  /// \param[out] out Newly created ::OrtDnnlProviderOptions. Must be released with OrtApi::ReleaseDnnlProviderOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtDnnlProviderOptions>> out)>>
       CreateDnnlProviderOptions;
 
+  /// \brief Set options in a oneDNN Execution Provider.
+  ///
+  /// Key should be in null terminated string format of the member of ::OrtDnnlProviderOptions
+  /// and value should be its related range.
+  ///
+  /// For example, key="use_arena" and value="1"
+  ///
+  /// \param[in] dnnl_options
+  /// \param[in] provider_options_keys Array of UTF-8 null-terminated string for provider options keys
+  /// \param[in] provider_options_values Array of UTF-8 null-terminated string for provider options values
+  /// \param[in] num_keys Number of elements in the `provider_option_keys` and `provider_options_values` arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2262,6 +4660,18 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> UpdateDnnlProviderOptions;
 
+  /// Get serialized oneDNN provider options string.
+  ///
+  /// For example, "use_arena=1;......"
+  ///
+  /// \param dnnl_options - OrtDnnlProviderOptions instance
+  /// \param allocator - a ptr to an instance of OrtAllocator obtained with CreateAllocator() or GetAllocatorWithDefaultOptions()
+  /// the specified allocator will be used to allocate continuous buffers for output strings and lengths.
+  /// \param ptr - is a UTF-8 null terminated string allocated using 'allocator'. The caller is responsible for using the same allocator to free it.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2278,6 +4688,27 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtDnnlProviderOptions> input)>>
       ReleaseDnnlProviderOptions;
 
+  /// \brief Get the graph node name from ::OrtKernelInfo.
+  ///
+  /// If `out` is nullptr, the value of `size` is set to the size of the name
+  /// string (including null-terminator), and a success status is returned.
+  ///
+  /// If the `size` parameter is greater than or equal to the name string's size,
+  /// the value of `size` is set to the true size of the string (including null-terminator),
+  /// the provided memory is filled with the string's contents, and a success status is returned.
+  ///
+  /// If the `size` parameter is less than the actual string's size and `out`
+  /// is not nullptr, the value of `size` is set to the true size of the string
+  /// and a failure status is returned.
+  ///
+  /// Can be used in a custom operator's CreateKernel callback to get the name of the operator's node name in the graph.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[out] out Memory location into which to write the UTF-8 null-terminated string representing the name.
+  /// \param[in,out] size Pointer to the size of the `out` buffer. See above comments for details.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.15
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2285,18 +4716,55 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> out,
               ffi.Pointer<ffi.Size> size)>> KernelInfo_GetNodeName;
 
+  /// \brief Get the session logger from ::OrtKernelInfo.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to get a logger that can be used to log
+  /// messages.
+  ///
+  /// \param[in] info An instance of ::OrtKernelInfo.
+  /// \param[out] logger Pointer set to the session's ::OrtLogger. Owned by ONNX Runtime, so do not free.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.15
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtKernelInfo> info,
                   ffi.Pointer<ffi.Pointer<OrtLogger>> logger)>>
       KernelInfo_GetLogger;
 
+  /// \brief Get the runtime logger from ::OrtKernelContext.
+  ///
+  /// Used in the KernelCompute callback of an OrtCustomOp to get a logger that can be used to log
+  /// messages during inference.
+  ///
+  /// \param[in] context An instance of ::OrtKernelContext.
+  /// \param[out] logger Pointer set to the kernel context's ::OrtLogger. Owned by ONNX Runtime, so do not free.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.15
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtKernelContext> context,
                   ffi.Pointer<ffi.Pointer<OrtLogger>> logger)>>
       KernelContext_GetLogger;
 
+  /// \brief Logs a message at the given severity level using the provided ::OrtLogger.
+  ///
+  /// Only messages with a severity level equal or greater than the ::OrtLogger's logging severity level
+  /// are logged. Use OrtApi::Logger_GetLoggingSeverityLevel to get the ::OrtLogger's logging severity
+  /// level.
+  ///
+  /// Can be used in custom operators to log messages with the logger retrieved via OrtApi::KernelInfo_GetLogger.
+  ///
+  /// \param[in] logger The ::OrtLogger instance.
+  /// \param[in] log_severity_level The message's severity level.
+  /// \param[in] message The message to log.
+  /// \param[in] file_path The filepath of the file in which the message is logged. Usually the value of ORT_FILE.
+  /// \param[in] line_number The file line number in which the message is logged. Usually the value of __LINE__.
+  /// \param[in] func_name The name of the function in which the message is logged. Usually the value of __FUNCTION__.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.15
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2307,12 +4775,34 @@ class OrtApi extends ffi.Struct {
               ffi.Int line_number,
               ffi.Pointer<ffi.Char> func_name)>> Logger_LogMessage;
 
+  /// \brief Get the logging severity level of the ::OrtLogger.
+  ///
+  /// Can be used in a custom operator to get the logging serverity level of the ::OrtLogger associated with
+  /// the ::OrtKernelInfo.
+  ///
+  /// \param[in] logger The ::OrtLogger instance.
+  /// \param[out] out Pointer to variable assigned with the logging severity level on success.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.15
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtLogger> logger, ffi.Pointer<ffi.Int32> out)>>
       Logger_GetLoggingSeverityLevel;
 
+  /// \brief Get a ::OrtValue tensor stored as a constant initializer in the graph node.
+  ///
+  /// Used in the CreateKernel callback of an OrtCustomOp to get a tensor value.
+  ///
+  /// \param[in] info ::OrtKernelInfo instance.
+  /// \param[in] index The node index.
+  /// \param[out] is_constant Is it a constant node input or not.
+  /// \param[out] out The OrtValue tensor value.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2322,12 +4812,46 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
       KernelInfoGetConstantInput_tensor;
 
+  /// \brief Get Optional Type information from an ::OrtTypeInfo
+  ///
+  /// This augments ::OrtTypeInfo to return an ::OrtOptionalTypeInfo when the type is optional.
+  /// The OrtOptionalTypeInfo also has a nested ::OrtTypeInfo that describes the type of the optional value.
+  /// ::OrtOptionalTypeInfo type can only appear within model metadata to describe inputs/outputs.
+  /// The actual OrtValues that are supplied in place of optional type inputs should contain
+  /// specific type that is described by ::OrtOptionalTypeInfo.
+  ///
+  /// So the picture: ::OrtTypeInfo -> ::OrtOptionalTypeInfo -> ::OrtTypeInfo (describes the type that can be supplied
+  /// in place of the optional type when creating the actual ::OrtValue).
+  ///
+  /// \param[in] type_info
+  /// \param[out] out A pointer to the ::OrtOptionalTypeInfo. Do not free this value,
+  /// it is owned by OrtTypeInfo instance. When the type_info does not represent
+  /// optional type, nullptr is returned in out.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> type_info,
                   ffi.Pointer<ffi.Pointer<OrtOptionalTypeInfo>> out)>>
       CastTypeInfoToOptionalTypeInfo;
 
+  /// \brief Get OrtTypeInfo for the allowed contained type from an ::OrtOptionalTypeInfo.
+  ///
+  /// This augments ::OrtOptionalTypeInfo to return an ::OrtTypeInfo for the contained type.
+  /// The OrtOptionalTypeInfo has a nested ::OrtTypeInfo that describes the type of the optional value.
+  /// ::OrtOptionalTypeInfo type can only appear within model metadata to describe inputs/outputs.
+  /// The actual OrtValues that are supplied in place of optional type inputs should contain
+  /// specific type that is described by the returned ::OrtTypeInfo.
+  ///
+  /// \param[in] optional_type_info
+  /// \param[out] out A copy of ::OrtTypeInfo for what the optional value could be.
+  /// The user must free this value with ReleaseTypeInfo.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2335,6 +4859,15 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTypeInfo>> out)>>
       GetOptionalContainedTypeInfo;
 
+  /// \brief Set a single string in a string tensor
+  /// Do not zero terminate the string data.
+  ///
+  /// \param[in] value A string tensor
+  /// \param[in] index - flat index of the element
+  /// \param[in] length_in_bytes length of the buffer in utf-8 bytes (without the null terminator)
+  /// \param[inout] buffer - address of return value
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2344,6 +4877,15 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Char>> buffer)>>
       GetResizedStringTensorElementBuffer;
 
+  /// \brief Get Allocator from KernelContext for a specific memoryInfo. Please use C API ReleaseAllocator to release out object
+  ///
+  /// \param[in] context OrtKernelContext instance
+  /// \param[in] mem_info OrtMemoryInfo instance
+  /// \param[out] out A pointer to OrtAllocator.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.15.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2360,12 +4902,35 @@ class OrtApi extends ffi.Struct {
   external ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>
       GetBuildInfoString;
 
+  /// \brief Create an OrtROCMProviderOptions
+  ///
+  /// \param[out] out Newly created ::OrtROCMProviderOptions. Must be released with OrtApi::ReleaseROCMProviderOptions
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<ffi.Pointer<OrtROCMProviderOptions>> out)>>
       CreateROCMProviderOptions;
 
+  /// \brief Set options in a ROCm Execution Provider.
+  ///
+  /// Please refer to https://onnxruntime.ai/docs/execution-providers/ROCm-ExecutionProvider.html
+  /// to know the available keys and values. Key should be in null terminated string format of the member of
+  /// ::OrtROCMProviderOptions and value should be its related range.
+  ///
+  /// For example, key="device_id" and value="0"
+  ///
+  /// \param[in] rocm_options
+  /// \param[in] provider_options_keys Array of UTF-8 null-terminated string for provider options keys
+  /// \param[in] provider_options_values Array of UTF-8 null-terminated string for provider options values
+  /// \param[in] num_keys Number of elements in the `provider_option_keys` and `provider_options_values` arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2374,6 +4939,18 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> UpdateROCMProviderOptions;
 
+  /// Get serialized ROCm provider options string.
+  ///
+  /// For example, "device_id=0;arena_extend_strategy=0;......"
+  ///
+  /// \param rocm_options - OrtROCMProviderOptions instance
+  /// \param allocator - a ptr to an instance of OrtAllocator obtained with CreateAllocator() or GetAllocatorWithDefaultOptions()
+  /// the specified allocator will be used to allocate continuous buffers for output strings and lengths.
+  /// \param ptr - is a UTF-8 null terminated string allocated using 'allocator'. The caller is responsible for using the same allocator to free it.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2392,6 +4969,18 @@ class OrtApi extends ffi.Struct {
               ffi.Void Function(ffi.Pointer<OrtROCMProviderOptions> input)>>
       ReleaseROCMProviderOptions;
 
+  /// \brief Create an allocator with specific type and register it with the ::OrtEnv
+  /// This API enhance CreateAndRegisterAllocator that it can create an allocator with specific type, not just CPU allocator
+  /// Enables sharing the allocator between multiple sessions that use the same env instance.
+  /// Lifetime of the created allocator will be valid for the duration of the environment.
+  /// Returns an error if an allocator with the same ::OrtMemoryInfo is already registered.
+  /// \param[in] env OrtEnv instance
+  /// \param[in] provider_type ExecutionProvider type
+  /// \param[in] mem_info OrtMemoryInfo instance
+  /// \param[in] arena_cfg Arena configuration
+  /// \param[in] provider_options_keys key of the provider options map
+  /// \param[in] provider_options_values value of the provider options map
+  /// \param[in] num_keys Length of the provider options map
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2403,6 +4992,23 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> provider_options_values,
               ffi.Size num_keys)>> CreateAndRegisterAllocatorV2;
 
+  /// \brief Run the model asynchronously in a thread owned by intra op thread pool
+  ///
+  /// \param[in] session
+  /// \param[in] run_options If nullptr, will use a default ::OrtRunOptions
+  /// \param[in] input_names Array of null terminated UTF8 encoded strings of the input names
+  /// \param[in] input Array of ::OrtValue%s of the input values
+  /// \param[in] input_len Number of elements in the input_names and inputs arrays
+  /// \param[in] output_names Array of null terminated UTF8 encoded strings of the output names
+  /// \param[in] output_names_len Number of elements in the output_names and outputs array
+  /// \param[out] output OrtValue* array of size output_names_len.
+  /// On calling RunAsync, output[i] could either be a null or a pointer to a preallocated OrtValue.
+  /// Later, the output array will be passed to run_async_callback with all null(s) filled with valid
+  /// OrtValue pointer(s) allocated by onnxruntime.
+  /// NOTE: it is customer's duty to finally release the output array and each of its member,
+  /// regardless of whether the member (OrtValue*) is allocated by onnxruntime or preallocated by the customer.
+  /// \param[in] run_async_callback Callback function on model run completion
+  /// \param[in] user_data User data that pass back to run_async_callback
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2417,6 +5023,16 @@ class OrtApi extends ffi.Struct {
               RunAsyncCallbackFn run_async_callback,
               ffi.Pointer<ffi.Void> user_data)>> RunAsync;
 
+  /// Update TensorRT EP provider option where its data type is pointer, for example 'user_compute_stream'.
+  /// If the data type of the provider option can be represented by string please use UpdateTensorRTProviderOptions.
+  ///
+  /// Note: It's caller's responsibility to properly manage the lifetime of the instance pointed by this pointer.
+  ///
+  /// \param tensorrt_options - OrtTensorRTProviderOptionsV2 instance
+  /// \param key - Name of the provider option
+  /// \param value - A pointer to the instance that will be assigned to this provider option
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2425,6 +5041,14 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Void> value)>>
       UpdateTensorRTProviderOptionsWithValue;
 
+  /// Get TensorRT EP provider option where its data type is pointer.
+  /// If the data type of the provider option can be represented by string please use GetTensorRTProviderOptionsAsString.
+  ///
+  /// \param tensorrt_options - OrtTensorRTProviderOptionsV2 instance
+  /// \param key - Name of the provider option
+  /// \param ptr - A pointer to the instance that is kept by the provider option
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2433,6 +5057,16 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> ptr)>>
       GetTensorRTProviderOptionsByName;
 
+  /// Update CUDA EP provider option where its data type is pointer, for example 'user_compute_stream'.
+  /// If the data type of the provider option can be represented by string please use UpdateCUDAProviderOptions.
+  ///
+  /// Note: It's caller's responsibility to properly manage the lifetime of the instance pointed by this pointer.
+  ///
+  /// \param cuda_options - OrtCUDAProviderOptionsV2 instance
+  /// \param key - Name of the provider option
+  /// \param value - A pointer to the instance that will be assigned to this provider option
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2440,6 +5074,14 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Char> key,
               ffi.Pointer<ffi.Void> value)>> UpdateCUDAProviderOptionsWithValue;
 
+  /// Get CUDA EP provider option where its data type is pointer.
+  /// If the data type of the provider option can be represented by string please use GetCUDAProviderOptionsAsString.
+  ///
+  /// \param cuda_options - OrtCUDAProviderOptionsV2 instance
+  /// \param key - Name of the provider option
+  /// \param ptr - A pointer to the instance that is kept by the provider option
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2448,6 +5090,15 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> ptr)>>
       GetCUDAProviderOptionsByName;
 
+  /// Get a EP resource.
+  /// E.g. a cuda stream or a cublas handle
+  ///
+  /// \param context - Kernel context
+  /// \param resource_version - Version of the resource
+  /// \param resource_id - Type of resource
+  /// \param resource - A pointer to returned resource
+  ///
+  /// \since Version 1.16.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2457,6 +5108,22 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> resource)>>
       KernelContext_GetResource;
 
+  /// \brief Set user logging function
+  ///
+  /// By default the logger created by the CreateEnv* functions is used to create the session logger as well.
+  /// This function allows a user to override this default session logger with a logger of their own choosing. This way
+  /// the user doesn't have to create a separate environment with a custom logger. This addresses the problem when
+  /// the user already created an env but now wants to use a different logger for a specific session (for debugging or
+  /// other reasons).
+  ///
+  /// \param[in] options
+  /// \param[in] user_logging_function A pointer to a logging function.
+  /// \param[in] user_logging_param A pointer to arbitrary data passed as the ::OrtLoggingFunction `param` parameter to
+  /// `user_logging_function`. This parameter is optional.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2465,11 +5132,24 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Void> user_logging_param)>>
       SetUserLoggingFunction;
 
+  /// Get number of input from OrtShapeInferContext
+  ///
+  /// \param[in] context
+  /// \param[out] out The number of inputs
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(ffi.Pointer<OrtShapeInferContext> context,
               ffi.Pointer<ffi.Size> out)>> ShapeInferContext_GetInputCount;
 
+  /// Get type and shape info of an input
+  ///
+  /// \param[in] context
+  /// \param[in] index The index of the input
+  /// \param[out] info Type shape info of the input
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2478,6 +5158,13 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtTensorTypeAndShapeInfo>> info)>>
       ShapeInferContext_GetInputTypeShape;
 
+  /// Get attribute from OrtShapeInferContext. Note that OrtShapeInferContext is a per-node context, one could only read attribute from current node.
+  ///
+  /// \param[in] context
+  /// \param[in] attr_name Name of the attribute
+  /// \param[out] attr Handle of the attribute fetched
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2486,12 +5173,26 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtOpAttr>> attr)>>
       ShapeInferContext_GetAttribute;
 
+  /// Set type and shape info of an output
+  ///
+  /// \param[in] context
+  /// \param[in] index The index of the output
+  /// \param[out] info Type shape info of the output
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(ffi.Pointer<OrtShapeInferContext> context,
                   ffi.Size index, ffi.Pointer<OrtTensorTypeAndShapeInfo> info)>>
       ShapeInferContext_SetOutputTypeShape;
 
+  /// Set symbolic shape to type shape info
+  ///
+  /// \param[in] info Type shape info
+  /// \param[in] dim_params Symbolic strings
+  /// \param[in] dim_params_length Number of strings
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2499,6 +5200,15 @@ class OrtApi extends ffi.Struct {
               ffi.Pointer<ffi.Pointer<ffi.Char>> dim_params,
               ffi.Size dim_params_length)>> SetSymbolicDimensions;
 
+  /// Read contents of an attribute to data
+  ///
+  /// \param[in] op_attr
+  /// \param[in] type Attribute type
+  /// \param[out] data Memory address to save raw content of the attribute
+  /// \param[in] len Number of bytes allowed to store in data
+  /// \param[out] out Number of bytes required to save the data when the call failed, or the real number of bytes saved to data on success
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2508,12 +5218,30 @@ class OrtApi extends ffi.Struct {
               ffi.Size len,
               ffi.Pointer<ffi.Size> out)>> ReadOpAttr;
 
+  /// \brief Set whether to use deterministic compute.
+  ///
+  /// Default is false. If set to true, this will enable deterministic compute for GPU kernels where possible.
+  /// Note that this most likely will have a performance cost.
+  ///
+  /// \param[in] options
+  /// \param[in] value
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
                   ffi.Pointer<OrtSessionOptions> options, ffi.Bool value)>>
       SetDeterministicCompute;
 
+  /// Run fn in parallel
+  ///
+  /// \param[in] context
+  /// \param[in] fn Function accepting usr_data and an integer as iterator
+  /// \param[in] total The number of times fn is to be invoked
+  /// \param[in] num_batch Number of batches by which the "total" is to be divided in maximum. When zero, there is no limit
+  /// \param[in] usr_data User data to be passed back to fn
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
       ffi.NativeFunction<
           OrtStatusPtr Function(
@@ -2526,6 +5254,18 @@ class OrtApi extends ffi.Struct {
               ffi.Size num_batch,
               ffi.Pointer<ffi.Void> usr_data)>> KernelContext_ParallelFor;
 
+  /// \brief Append OpenVINO execution provider to the session options
+  ///
+  /// If OpenVINO is not available (due to a non OpenVINO enabled build, or if OpenVINO is not installed on the system), this function will fail.
+  ///
+  /// \param[in] options
+  /// \param[in] provider_options_keys
+  /// \param[in] provider_options_values
+  /// \param[in] num_keys
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.17.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2535,6 +5275,18 @@ class OrtApi extends ffi.Struct {
                   ffi.Size num_keys)>>
       SessionOptionsAppendExecutionProvider_OpenVINO_V2;
 
+  /// \brief Append VitisAI provider to session options
+  ///
+  /// If VitisAI is not available (due to a non VitisAI enabled build, or if VitisAI is not installed on the system), this function will return failure.
+  ///
+  /// \param[in] options
+  /// \param[in] provider_options_keys
+  /// \param[in] provider_options_values
+  /// \param[in] num_keys
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.18.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2544,6 +5296,16 @@ class OrtApi extends ffi.Struct {
                   ffi.Size num_keys)>>
       SessionOptionsAppendExecutionProvider_VitisAI;
 
+  /// \brief Get scratch buffer from the corresponding allocator under the sepcific OrtMemoryInfo object.
+  /// NOTE: callers are responsible to release this scratch buffer from the corresponding allocator
+  /// \param[in] context OrtKernelContext instance
+  /// \param[in] mem_info OrtMemoryInfo instance
+  /// \param[in] count_or_bytes How many bytes is this scratch buffer
+  /// \param[out] out A pointer to the scrach buffer
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.18.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2553,6 +5315,15 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<ffi.Void>> out)>>
       KernelContext_GetScratchBuffer;
 
+  /// \brief Get allocator from KernelInfo for a specific memory type. Please use C API ReleaseAllocator to release out object
+  ///
+  /// \param[in] info OrtKernelInfo instance
+  /// \param[in] mem_type OrtMemType object
+  /// \param[out] out A pointer to OrtAllocator
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.18.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2561,6 +5332,26 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Pointer<OrtAllocator>> out)>>
       KernelInfoGetAllocator;
 
+  /// \brief Replace initialized Tensors with external data with the provided files in memory
+  ///
+  /// The function will find the initialized TensorProtos with external data in the graph with the provided
+  /// external file names and the file content in memory. The API gets the external file name, offset, data length
+  /// from TensorProto, and locate the tensor data from the file in memory buffer.
+  /// It creates a Tensor to replace the existing Tensor in graph. The replacement
+  /// will occur before any of the optimizations take place. The data will be copied into the graph
+  /// since TensorProto can't refer to the user provided buffers.
+  ///
+  /// \param[in] options
+  /// \param[in] external_initializer_file_names Array of null terminated UTF-8 encoded strings of the file names
+  /// which holds the external initializers.
+  /// \param[in] external_initializer_file_buffer_array Array of pointers to the buffer of the file content.
+  /// The buffer can be freed after session creation.
+  /// \param[in] external_initializer_file_lengths Array of size_t to indicate the length of file content
+  /// \param[in] num_external_initializer_files Number of external files
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.18.
   external ffi.Pointer<
           ffi.NativeFunction<
               OrtStatusPtr Function(
@@ -2572,6 +5363,542 @@ class OrtApi extends ffi.Struct {
                   ffi.Pointer<ffi.Size> external_initializer_file_lengths,
                   ffi.Size num_external_initializer_files)>>
       AddExternalInitializersFromFilesInMemory;
+
+  /// \brief Create an OrtLoraAdapter
+  ///
+  /// The function attempts to locate file specified by adapter_file_path, read it and create an OrtLoraAdapter
+  /// instance. The adapter_file_path should be a valid path to a file that contains a valid Lora Adapter
+  /// format. The function attempts to validate the format at load time. The file will always be memory mapped, unless
+  /// the platform does not support memory mapping, in which case the file will be read into memory.
+  ///
+  /// \param[in] adapter_file_path adapter file path.
+  /// \param[in] allocator optional pointer to a device allocator. If specified
+  /// data is copied to the device at some point before Run() is invoked. If nullptr, data stays on CPU.
+  /// The data would still be copied to device if required by the model at inference time.
+  /// \param[out] out A pointer to a newly created OrtLoraAdapter instance. Must be released with
+  /// OrtApi::ReleaseLoraAdapter.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.20.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<ffi.Char> adapter_file_path,
+              ffi.Pointer<OrtAllocator> allocator,
+              ffi.Pointer<ffi.Pointer<OrtLoraAdapter>> out)>> CreateLoraAdapter;
+
+  /// \brief Create an OrtLoraAdapter
+  ///
+  /// The function copies the bytes from the array and creates an OrtLoraAdapter instance.
+  ///
+  ///
+  /// \param[in] bytes pointer to a valid Lora Adapter format buffer.
+  /// \param[in] num_bytes length of bytes buffer.
+  /// \param[in] allocator optional pointer to a device allocator. If specified
+  /// data is copied to the device at some point before Run() is invoked. If nullptr, data stays on CPU.
+  /// The data would still be copied to device if required by the model at inference time.
+  /// \param[out] out A pointer to a newly created OrtLoraAdapter instance. Must be released with
+  /// OrtApi::ReleaseLoraAdapter.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.20.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<ffi.Void> bytes,
+                  ffi.Size num_bytes,
+                  ffi.Pointer<OrtAllocator> allocator,
+                  ffi.Pointer<ffi.Pointer<OrtLoraAdapter>> out)>>
+      CreateLoraAdapterFromArray;
+
+  /// \brief Release an ::OrtLoraAdapter obtained from OrtApi::CreateLoraAdapter
+  external ffi.Pointer<
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Pointer<OrtLoraAdapter> input)>>
+      ReleaseLoraAdapter;
+
+  /// \brief Add the Lora Adapter to the list of active adapters.
+  ///
+  /// The function adds the Lora Adapter to the list of active adapters. The Lora Adapter must be created with
+  /// OrtApi::CreateLoraAdapter or FromArray. The Lora Adapter will be used by the session to run the model.
+  /// The instance of the OrtRunOptions can then be used to customize the Run() calls.
+  /// More than one OrtLoraAdapter can be active at the same time. Lora Parameters that belong to different
+  /// Lora adapters that will be active at the same time must not overlap.
+  /// This setting does not affect RunWithBinding.
+  ///
+  /// \param[in] options OrtRunOptions instance
+  /// \param[in] adapter OrtLoraAdapter instance
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.20.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtRunOptions> options,
+                  ffi.Pointer<OrtLoraAdapter> adapter)>>
+      RunOptionsAddActiveLoraAdapter;
+
+  /// \brief Set DynamicOptions for EPs (Execution Providers)
+  ///
+  /// Valid options can be found in `include\onnxruntime\core\session\onnxruntime_session_options_config_keys.h`
+  /// Look for `kOrtEpDynamicOptions`
+  ///
+  /// \param[in] sess OrtSession
+  /// \param[in] keys Array of null terminated UTF8 encoded strings of EP dynamic option keys
+  /// \param[in] values Array of null terminated UTF8 encoded string of EP dynamic option values
+  /// \param[in] kv_len Number of elements in the keys and values arrays
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.20.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtSession> sess,
+              ffi.Pointer<ffi.Pointer<ffi.Char>> keys,
+              ffi.Pointer<ffi.Pointer<ffi.Char>> values,
+              ffi.Size kv_len)>> SetEpDynamicOptions;
+
+  /// \brief Release an OrtValueInfo instance if it was not added to an OrtGraph.
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Pointer<OrtValueInfo> input)>>
+      ReleaseValueInfo;
+
+  /// \brief Release an OrtNode if it was not added to an OrtGraph.
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtNode> input)>>
+      ReleaseNode;
+
+  /// \brief Release an OrtGraph.
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtGraph> input)>>
+      ReleaseGraph;
+
+  /// \brief Release an OrtModel.
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtModel> input)>>
+      ReleaseModel;
+
+  /// \brief Get the value name from an OrtValueInfo instance.
+  /// \param[in] value_info The OrtValueInfo instance.
+  /// \param[out] name The name of the OrtValueInfo
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(ffi.Pointer<OrtValueInfo> value_info,
+              ffi.Pointer<ffi.Pointer<ffi.Char>> name)>> GetValueInfoName;
+
+  /// \brief Get the type information from an OrtValueInfo instance.
+  /// \param[in] value_info The OrtValueInfo instance.
+  /// \param[out] type_info The type info of the OrtValueInfo
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtValueInfo> value_info,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      GetValueInfoTypeInfo;
+
+  /// \brief Get the Model Editor API instance
+  ///
+  /// Get the Model Editor API instance to create a new model or augment an existing model.
+  ///
+  /// \return Model Editor API struct
+  ///
+  /// \since Version 1.22.
+  external ffi
+      .Pointer<ffi.NativeFunction<ffi.Pointer<OrtModelEditorApi> Function()>>
+      GetModelEditorApi;
+
+  /// \brief Create an OrtValue for a Tensor that uses pre-existing memory.
+  ///
+  /// ORT will take ownership of the memory and free it using the provided deleter when no longer in use.
+  ///
+  /// \param[in] deleter OrtAllocator instance that will be used to free the memory.
+  /// Only the OrtAllocator:Info and OrtAllocator::Release functions are required.
+  /// The OrtMemoryInfo returned by OrtAllocator::Info must match the location of p_data.
+  /// \param[in] p_data Pointer to the memory that will be used by the Tensor. ORT will take ownership of the memory.
+  /// \param[in] p_data_len Length of the memory in bytes.
+  /// \param[in] shape Dimensions of the Tensor. All values should be > 0.
+  /// \param[in] shape_len Number of dimensions in the shape array.
+  /// \param[in] type Data type of the Tensor.
+  /// \param[out] out Newly created ::OrtValue. Must be freed with OrtApi::ReleaseValue
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtAllocator> deleter,
+                  ffi.Pointer<ffi.Void> p_data,
+                  ffi.Size p_data_len,
+                  ffi.Pointer<ffi.Int64> shape,
+                  ffi.Size shape_len,
+                  ffi.Int32 type,
+                  ffi.Pointer<ffi.Pointer<OrtValue>> out)>>
+      CreateTensorWithDataAndDeleterAsOrtValue;
+
+  /// \brief sets load cancellation flag to abort session loading process.
+  ///
+  /// \param[in] options instance that was passed to the session at creation time.
+  /// \param[in] cancel setting this to true after model loading process was initiated will
+  /// attempt to cancel the loading process. If cancellation is successful, CreateSession()
+  /// CreateSessionFromArray() or any other session creation API that take session options as an
+  /// argument will return an OrtStatus indicating that session loading was canceled at user request,
+  /// error code ORT_MODEL_LOAD_CANCELED.
+  /// The APIs above would not return any valid Session instance. This is the best case effort and the result
+  /// is not guaranteed. The session may have already been created and initialized
+  /// before the cancellation request was issued.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtSessionOptions> options, ffi.Bool cancel)>>
+      SessionOptionsSetLoadCancellationFlag;
+
+  /// \brief Get the Compile API instance.
+  ///
+  /// Get the Compile API instance to compile ONNX models. Execution providers that support compilation fuse a subgraph
+  /// into an EPContext node that wraps a provider-specific binary representation of the subgraph.
+  /// For more details about the EPContext design, refer to:
+  /// \htmlonly
+  /// <a href="https://onnxruntime.ai/docs/execution-providers/EP-Context-Design.html">EPContext design document.</a>
+  /// \endhtmlonly
+  ///
+  /// \return Compile API struct instance.
+  ///
+  /// \since Version 1.22.
+  external ffi
+      .Pointer<ffi.NativeFunction<ffi.Pointer<OrtCompileApi> Function()>>
+      GetCompileApi;
+
+  /// \brief Create an OrtKeyValuePairs instance.
+  ///
+  /// \param[out] out A pointer to a newly created OrtKeyValuePairs instance.
+  ///
+  /// \note Must be released by calling ReleaseKeyValuePairs.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Pointer<OrtKeyValuePairs>> out)>>
+      CreateKeyValuePairs;
+
+  /// \brief Add a key-value pair to the OrtKeyValuePairs instance.
+  ///
+  /// \param[in] kvps OrtKeyValuePairs instance.
+  /// \param[in] key Key to be added.
+  /// \param[in] value Value to be added.
+  ///
+  /// \note The `key` and `value` are copied internally.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<OrtKeyValuePairs> kvps,
+              ffi.Pointer<ffi.Char> key,
+              ffi.Pointer<ffi.Char> value)>> AddKeyValuePair;
+
+  /// \brief Get the value associated with a key in the OrtKeyValuePairs instance.
+  ///
+  /// \param[in] kvps OrtKeyValuePairs instance.
+  /// \param[in] key Key to be searched.
+  ///
+  /// \return The value associated with the key, or nullptr if the key does not exist.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<OrtKeyValuePairs> kvps,
+              ffi.Pointer<ffi.Char> key)>> GetKeyValue;
+
+  /// \brief Get all the key-value pairs from the OrtKeyValuePairs instance.
+  ///
+  /// \param[in] kvps OrtKeyValuePairs instance.
+  /// \param[out] keys Array of keys from `kvps`.
+  /// \param[out] values Array of values from `kvps`.
+  /// \param[out] num_entries Number of entries in `keys` and `values`.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<OrtKeyValuePairs> kvps,
+              ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.Char>>> keys,
+              ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.Char>>> values,
+              ffi.Pointer<ffi.Size> num_entries)>> GetKeyValuePairs;
+
+  /// \brief Remove a key-value pair from the OrtKeyValuePairs instance.
+  ///
+  /// \param[in] kvps OrtKeyValuePairs instance.
+  /// \param[in] key Key to be removed. No error if not found.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<OrtKeyValuePairs> kvps,
+              ffi.Pointer<ffi.Char> key)>> RemoveKeyValuePair;
+
+  /// \brief Release an OrtKeyValuePairs instance.
+  ///
+  /// \param[in] input OrtKeyValuePairs instance to be released.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<OrtKeyValuePairs> input)>>
+      ReleaseKeyValuePairs;
+
+  /// \brief Register an execution provider library with ORT.
+  ///
+  /// The library must export 'CreateEpFactories' and 'ReleaseEpFactory' functions.
+  /// See OrtEpApi for more details.
+  ///
+  /// \param[in] env The OrtEnv instance to register the library in.
+  /// \param[in] registration_name The name to register the execution provider library under.
+  /// \param[in] path The path to the execution provider library.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtEnv> env,
+              ffi.Pointer<ffi.Char> registration_name,
+              ffi.Pointer<ffi.Char> path)>> RegisterExecutionProviderLibrary;
+
+  /// \brief Unregister an execution provider library with ORT.
+  ///
+  /// ORT will call ReleaseEpFactory for all factories created by the library, and unload the library.
+  ///
+  /// You <b>MUST</b> ensure there are no Session instances using execution providers created by the library
+  /// before calling this function.
+  ///
+  /// \param[in] env The OrtEnv instance to unregister the library from.
+  /// \param[in] registration_name The name the execution provider library was registered under.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<ffi.Char> registration_name)>>
+      UnregisterExecutionProviderLibrary;
+
+  /// \brief Get the list of available OrtEpDevice instances.
+  ///
+  /// Each OrtEpDevice instance contains details of the execution provider and the device it will use.
+  ///
+  /// \param[in] env The OrtEnv instance to query.
+  /// \param[out] ep_devices The OrtEpDevice instances that the execution provider will use.
+  /// \param[out] num_ep_devices The number of OrtEpDevice instances returned.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtEnv> env,
+              ffi.Pointer<ffi.Pointer<ffi.Pointer<OrtEpDevice>>> ep_devices,
+              ffi.Pointer<ffi.Size> num_ep_devices)>> GetEpDevices;
+
+  /// \brief Append the execution provider that is responsible for the selected OrtEpDevice instances
+  /// to the session options.
+  ///
+  /// \param[in] session_options Session options to add execution provider to.
+  /// \param[in] env Environment that execution providers were registered with.
+  /// \param[in] ep_devices One or more OrtEpDevice instances to create an execution provider for.
+  /// Obtain from GetEpDevices. All OrtEpDevice instances must be from the same execution
+  /// provider. It is only necessary to provide multiple OrtEpDevices if you want to use the
+  /// same execution provider for multiple devices.
+  /// e.g. the EP is capable of running on GPU and NPU.
+  /// \param[in] num_ep_devices Number of OrtEpDevice instances.
+  /// \param[in] ep_option_keys Optional keys to configure the execution provider.
+  /// \param[in] ep_option_vals Optional values to configure the execution provider.
+  /// \param[in] num_ep_options Number of execution provide options to add.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtSessionOptions> session_options,
+                  ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<ffi.Pointer<OrtEpDevice>> ep_devices,
+                  ffi.Size num_ep_devices,
+                  ffi.Pointer<ffi.Pointer<ffi.Char>> ep_option_keys,
+                  ffi.Pointer<ffi.Pointer<ffi.Char>> ep_option_vals,
+                  ffi.Size num_ep_options)>>
+      SessionOptionsAppendExecutionProvider_V2;
+
+  /// \brief Set the execution provider selection policy for the session.
+  ///
+  /// Allows users to specify a device selection policy for automatic execution provider (EP) selection.
+  /// If custom selection is required please use SessionOptionsSetEpSelectionPolicyDelegate instead.
+  ///
+  /// \param[in] session_options The OrtSessionOptions instance.
+  /// \param[in] policy The device selection policy to use (see OrtExecutionProviderDevicePolicy).
+  ///
+  /// \since Version 1.22
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(ffi.Pointer<OrtSessionOptions> session_options,
+              ffi.Int32 policy)>> SessionOptionsSetEpSelectionPolicy;
+
+  /// \brief Set the execution provider selection policy delegate for the session.
+  ///
+  /// Allows users to provide a custom device selection policy for automatic execution provider (EP) selection.
+  ///
+  /// \param[in] session_options The OrtSessionOptions instance.
+  /// \param[in] delegate Delegate callback for custom selection.
+  /// \param[in] delegate_state Optional state that will be passed to the delegate callback. nullptr if not required.
+  ///
+  /// \since Version 1.22
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtSessionOptions> session_options,
+                  EpSelectionDelegate delegate,
+                  ffi.Pointer<ffi.Void> delegate_state)>>
+      SessionOptionsSetEpSelectionPolicyDelegate;
+
+  /// \brief Get the hardware device type.
+  ///
+  /// \param[in] device The OrtHardwareDevice instance to query.
+  /// \return The hardware device type.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<OrtHardwareDevice> device)>>
+      HardwareDevice_Type;
+
+  /// \brief Get the hardware device's vendor identifier.
+  ///
+  /// \param[in] device The OrtHardwareDevice instance to query.
+  /// \return The hardware device vendor identifier.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Uint32 Function(ffi.Pointer<OrtHardwareDevice> device)>>
+      HardwareDevice_VendorId;
+
+  /// \brief Get the hardware device's vendor name.
+  ///
+  /// \param[in] device The OrtHardwareDevice instance to query.
+  /// \return The hardware device's vendor name.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<OrtHardwareDevice> device)>> HardwareDevice_Vendor;
+
+  /// \brief Get the hardware device's unique identifier.
+  ///
+  /// \param[in] device The OrtHardwareDevice instance to query.
+  /// \return The device id.
+  ///
+  /// \note This is not a unique identifier. It identifies the hardware type when combined with vendor id.
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Uint32 Function(ffi.Pointer<OrtHardwareDevice> device)>>
+      HardwareDevice_DeviceId;
+
+  /// \brief Get hardware device metadata.
+  ///
+  /// \param[in] device The OrtHardwareDevice instance to query.
+  /// \return An OrtKeyValuePairs instance containing the metadata for the device.
+  /// Note: ORT owns the instance so the user must not call ReleaseKeyValuePairs with it.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtKeyValuePairs> Function(
+              ffi.Pointer<OrtHardwareDevice> device)>> HardwareDevice_Metadata;
+
+  /// \brief Get the execution provider name.
+  ///
+  /// \param[in] ep_device The OrtEpDevice instance to query.
+  /// \return The execution provider name.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<OrtEpDevice> ep_device)>> EpDevice_EpName;
+
+  /// \brief Get the execution provider's vendor name.
+  ///
+  /// \param[in] ep_device The OrtEpDevice instance to query.
+  /// \return The execution provider's vendor name.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<OrtEpDevice> ep_device)>> EpDevice_EpVendor;
+
+  /// \brief Get the metadata for the OrtEpDevice.
+  ///
+  /// \param[in] ep_device The OrtEpDevice instance to query.
+  /// \return An OrtKeyValuePairs instance containing the metadata for the device.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtKeyValuePairs> Function(
+              ffi.Pointer<OrtEpDevice> ep_device)>> EpDevice_EpMetadata;
+
+  /// \brief Get the execution provider options for the OrtEpDevice.
+  ///
+  /// \param[in] ep_device The OrtEpDevice instance to query.
+  /// \return An OrtKeyValuePairs instance containing the execution provider options for the device.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtKeyValuePairs> Function(
+              ffi.Pointer<OrtEpDevice> ep_device)>> EpDevice_EpOptions;
+
+  /// \brief Get the OrtHardwareDevice instance for the OrtEpDevice.
+  ///
+  /// \param[in] ep_device The OrtEpDevice instance to query.
+  /// \return The OrtHardwareDevice instance for the device.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtHardwareDevice> Function(
+              ffi.Pointer<OrtEpDevice> ep_device)>> EpDevice_Device;
+
+  /// \brief Get the OrtEpApi instance for implementing an execution provider.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<ffi.NativeFunction<ffi.Pointer<OrtEpApi> Function()>>
+      GetEpApi;
 }
 
 typedef OrtStatusPtr = ffi.Pointer<OrtStatus>;
@@ -2759,8 +6086,13 @@ class OrtROCMProviderOptions extends ffi.Struct {
 }
 
 /// \brief OpenVINO Provider Options
-///
-/// \see OrtApi::SessionOptionsAppendExecutionProvider_OpenVINO
+/// \brief This Struct is frozen since ORT 1.13.0. Its maintained part of Legacy API for compatibility.
+/// \brief For latest OpenVINO Provider Options update to the ProviderOptions map.
+/// \brief Latest OpenVINO Provider Options are listed in the
+/// \htmlonly
+/// <a href="https://onnxruntime.ai/docs/execution-providers/OpenVINO-ExecutionProvider.html#summary-of-options">onnxruntime document.</a>
+/// \endhtmlonly
+/// \see OrtApi::SessionOptionsAppendExecutionProvider()
 class OrtOpenVINOProviderOptions extends ffi.Struct {
   /// \brief Device type string
   ///
@@ -2933,6 +6265,10 @@ class OrtMIGraphXProviderOptions extends ffi.Struct {
 
   /// migraphx model path name
   external ffi.Pointer<ffi.Char> migraphx_load_model_path;
+
+  /// migraphx tuned compile  Default = false
+  @ffi.Bool()
+  external bool migraphx_exhaustive_tune;
 }
 
 class OrtTrainingApi extends ffi.Opaque {}
@@ -2957,6 +6293,868 @@ typedef RunAsyncCallbackFn = ffi.Pointer<
             ffi.Pointer<ffi.Pointer<OrtValue>> outputs,
             ffi.Size num_outputs,
             OrtStatusPtr status)>>;
+
+/// \brief The OrtModelEditorApi struct provides functions to create or edit an ONNX model.
+///
+/// See onnxruntime/test/shared_lib/test_model_editor_api.cc for example usage.
+///
+/// \since Version 1.22.
+class OrtModelEditorApi extends ffi.Struct {
+  /// \brief Create an OrtTypeInfo instance for a Tensor.
+  ///
+  /// Create an OrtTypeInfo instance for a Tensor to use as graph inputs/outputs with the Model Editor API.
+  ///
+  /// User can release `tensor_info` after creating the OrtTypeInfo.
+  ///
+  /// \param[in] tensor_info Tensor type and shape information.
+  /// \param[out] type_info TypeInfo instance for the tensor.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtTensorTypeAndShapeInfo> tensor_info,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      CreateTensorTypeInfo;
+
+  /// \brief Create an OrtTypeInfo instance for a SparseTensor.
+  ///
+  /// Create an OrtTypeInfo instance for a SparseTensor to use as graph inputs/outputs with the Model Editor API.
+  ///
+  /// User can release `tensor_info` after creating the OrtTypeInfo.
+  ///
+  /// \param[in] tensor_info SparseTensor type and shape information.
+  /// \param[out] type_info TypeInfo instance for the tensor.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtTensorTypeAndShapeInfo> tensor_info,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      CreateSparseTensorTypeInfo;
+
+  /// \brief Create an OrtTypeInfo instance for a Map.
+  ///
+  /// Create an OrtTypeInfo instance for a Map to use as graph inputs/outputs with the Model Editor API.
+  ///
+  /// User can release `map_value_type` after creating the OrtTypeInfo.
+  ///
+  /// \param[in] map_key_type Key type for the map.
+  /// \param[in] map_value_type Value type for the map.
+  /// \param[out] type_info TypeInfo instance for the map.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Int32 map_key_type,
+                  ffi.Pointer<OrtTypeInfo> map_value_type,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      CreateMapTypeInfo;
+
+  /// \brief Create an OrtTypeInfo instance for a Sequence.
+  ///
+  /// Create an OrtTypeInfo instance for a Sequence to use as graph inputs/outputs with the Model Editor API.
+  ///
+  /// User can release `sequence_type` after creating the OrtTypeInfo.
+  ///
+  /// \param[in] sequence_type Sequence type and shape information.
+  /// \param[out] type_info TypeInfo instance for the sequence.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> sequence_type,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      CreateSequenceTypeInfo;
+
+  /// \brief Create an OrtTypeInfo instance for an Optional.
+  ///
+  /// Create an OrtTypeInfo instance for an Optional to use as graph inputs/outputs with the Model Editor API.
+  ///
+  /// User can release `contained_type` after creating the OrtTypeInfo.
+  ///
+  /// \param[in] contained_type Tensor type and shape information.
+  /// \param[out] type_info TypeInfo instance for the tensor.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtTypeInfo> contained_type,
+                  ffi.Pointer<ffi.Pointer<OrtTypeInfo>> type_info)>>
+      CreateOptionalTypeInfo;
+
+  /// \brief Create an OrtValueInfo for use as an OrtGraph input or output.
+  ///
+  /// \param[in] name The name of the input or output.
+  /// \param[in] type_info The type information for the input or output. The provided value is copied.
+  /// \param[out] value_info The OrtValueInfo instance.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<ffi.Char> name,
+                  ffi.Pointer<OrtTypeInfo> type_info,
+                  ffi.Pointer<ffi.Pointer<OrtValueInfo>> value_info)>>
+      CreateValueInfo;
+
+  /// \brief Create an OrtNode to add to an OrtGraph.
+  ///
+  /// Create an OrtNode.
+  ///
+  /// Create attributes with CreateOpAttr. OrtOpAttr instances are copied.
+  ///
+  /// \param[in] operator_name The name of the operator.
+  /// \param[in] domain_name The domain of the operator. Use an empty string for ONNX operators.
+  /// \param[in] node_name The name of the node.
+  /// \param[in] input_names The names of the inputs.
+  /// \param[in] input_names_len The number of input names.
+  /// \param[in] output_names The names of the outputs.
+  /// \param[in] output_names_len The number of output names.
+  /// \param[in] attributes The optional attributes of the node.
+  /// \param[in] attribs_len The number of attributes. May be zero.
+  /// \param[out] node The OrtNode instance.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<ffi.Char> operator_name,
+              ffi.Pointer<ffi.Char> domain_name,
+              ffi.Pointer<ffi.Char> node_name,
+              ffi.Pointer<ffi.Pointer<ffi.Char>> input_names,
+              ffi.Size input_names_len,
+              ffi.Pointer<ffi.Pointer<ffi.Char>> output_names,
+              ffi.Size output_names_len,
+              ffi.Pointer<ffi.Pointer<OrtOpAttr>> attributes,
+              ffi.Size attribs_len,
+              ffi.Pointer<ffi.Pointer<OrtNode>> node)>> CreateNode;
+
+  /// \brief Create an OrtGraph
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<ffi.Pointer<OrtGraph>> graph)>>
+      CreateGraph;
+
+  /// \brief Set the inputs for the OrtGraph.
+  ///
+  /// Set the graph inputs. This will replace any existing inputs with the new values.
+  /// The OrtGraph takes ownership of the OrtValueInfo instances and you should NOT call ReleaseOrtValueInfo.
+  ///
+  /// \param[in] graph The OrtGraph instance to update.
+  /// \param[in] inputs The input OrtValueInfo instances.
+  /// \param[in] inputs_len The number of input OrtValueInfo instances.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtGraph> graph,
+              ffi.Pointer<ffi.Pointer<OrtValueInfo>> inputs,
+              ffi.Size inputs_len)>> SetGraphInputs;
+
+  /// \brief Set the outputs for the OrtGraph.
+  ///
+  /// Set the graph outputs. This will replace any existing outputs with the new values.
+  /// The OrtGraph takes ownership of the OrtValueInfo instances provided and you should NOT call ReleaseOrtValueInfo.
+  ///
+  /// \param[in] graph The OrtGraph instance to update.
+  /// \param[in] outputs The output OrtValueInfo instances.
+  /// \param[in] outputs_len The number of output OrtValueInfo instances.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtGraph> graph,
+              ffi.Pointer<ffi.Pointer<OrtValueInfo>> outputs,
+              ffi.Size outputs_len)>> SetGraphOutputs;
+
+  /// \brief Add an initializer to the OrtGraph
+  ///
+  /// ORT will take ownership of the OrtValue and you should NOT call ReleaseOrtValue.
+  ///
+  /// Two options:
+  ///
+  /// Allocated memory:
+  /// Use CreateTensorAsOrtValue (allocates memory) and populate the tensor with the data.
+  /// Set `data_is_external` to false.
+  ///
+  /// Pre-existing memory:
+  /// Use CreateTensorWithDataAsOrtValue or CreateTensorWithDataAndDeleterAsOrtValue to create an OrtValue
+  /// with a tensor that contains a pointer to the existing data.
+  /// Set `data_is_external` to true.
+  ///
+  /// The pointer must remain valid for the duration of the inference session.
+  /// If using CreateTensorWithDataAsOrtValue you are responsible for freeing the memory after the inference session
+  /// is released.
+  /// If using CreateTensorWithDataAndDeleterAsOrtValue, ORT will free the memory using the provided deleter as
+  /// soon as the OrtValue is no longer in use.
+  ///
+  /// NOTE: A tensor containing pre-existing memory MUST have 128 bytes of data or more.
+  /// For smaller tensors use CreateTensorAsOrtValue.
+  ///
+  /// ONNX shape inferencing does not support external data. An initializer involved in shape inferencing is
+  /// typically small (a single value or limited by the rank of a tensor) and uses less than 128 bytes of
+  /// memory, so this limit acts as a simple catch-all rule to avoid issues.
+  /// e.g. Reshape's `shape`, Clip's `min` and `max`, various ops `axes`.
+  ///
+  /// \param[in] graph The OrtGraph instance to update.
+  /// \param[in] name The value name for the initializer.
+  /// \param[in] tensor The OrtValue instance containing the tensor data.
+  /// \param[in] data_is_external Set to true if the data is external and should not be copied.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtGraph> graph,
+              ffi.Pointer<ffi.Char> name,
+              ffi.Pointer<OrtValue> tensor,
+              ffi.Bool data_is_external)>> AddInitializerToGraph;
+
+  /// \brief Add an OrtNode to an OrtGraph
+  ///
+  /// Add the node to the graph. The OrtGraph will take ownership of OrtNode and you should NOT call ReleaseOrtNode.
+  ///
+  /// \param[in] graph The OrtGraph instance to update.
+  /// \param[in] node The OrtNode instance to add to the graph.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtGraph> graph, ffi.Pointer<OrtNode> node)>>
+      AddNodeToGraph;
+
+  /// \brief Create an OrtModel.
+  ///
+  /// Create an OrtModel.
+  ///
+  /// This can be used to build a new model, or to augment an existing model.
+  ///
+  /// \param[in] domain_names The domain names for the model.
+  /// If augmenting an existing model add additional domains if needed.
+  /// \param[in] opset_versions The opset versions for the model.
+  /// If augmenting an existing model add additional opset versions if needed.
+  /// \param[in] opset_entries_len The number of domain_names and opset_versions entries.
+  /// Domain and opset entries should be 1:1
+  /// \param[out] model The OrtModel instance.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<ffi.Pointer<ffi.Char>> domain_names,
+              ffi.Pointer<ffi.Int> opset_versions,
+              ffi.Size opset_entries_len,
+              ffi.Pointer<ffi.Pointer<OrtModel>> model)>> CreateModel;
+
+  /// \brief Add an OrtGraph to an OrtModel.
+  ///
+  /// Add the graph to a model. This should be called once when creating a new model.
+  ///
+  /// The OrtModel takes ownership of the OrtGraph and you should NOT call ReleaseOrtGraph.
+  ///
+  /// \param[in] model The OrtModel instance to update.
+  /// \param[in] graph The OrtGraph instance to add to the model.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModel> model, ffi.Pointer<OrtGraph> graph)>>
+      AddGraphToModel;
+
+  /// \brief Create an OrtSession using the OrtModel.
+  ///
+  /// Create an inference session using the OrtModel instance.
+  /// The OrtModel should have been populated with an OrtGraph containing nodes and initializers, and SetGraphInputs
+  /// and SetGraphOutputs must have been called.
+  /// This will validate the model, run optimizers, and prepare the session for inferencing.
+  ///
+  /// ReleaseOrtModel must be called to free the OrtModel after session creation.
+  ///
+  /// \param[in] env The OrtEnv instance.
+  /// \param[in] model The OrtModel instance.
+  /// \param[in] options The OrtSessionOptions instance.
+  /// \param[out] out The OrtSession instance.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<OrtModel> model,
+                  ffi.Pointer<OrtSessionOptions> options,
+                  ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
+      CreateSessionFromModel;
+
+  /// \brief Create an OrtSession to augment an existing model.
+  ///
+  /// Create an OrtSession with an existing model that will be augmented with additional nodes and initializers.
+  /// Nodes can be added before or after the existing nodes in the model. ONNX Runtime will connect the nodes when the
+  /// model is finalized.
+  ///
+  /// To add nodes and initializers to the existing model, first create an OrtModel using CreateModel.
+  /// Add nodes and initializers to the OrtModel using AddNodeToGraph and AddInitializerToGraph.
+  /// Graph inputs/outputs should be updated with SetGraphInputs and SetGraphOutputs as needed to reflect changes made
+  /// by the new nodes. The list of graph inputs/outputs should be for the overall model and not just the new nodes.
+  ///
+  /// Add the new information from the OrtModel to the original model using ApplyModelToSession, and prepare the
+  /// session for inferencing by calling FinalizeModelEditorSession.
+  ///
+  /// \param{in} env The OrtEnv instance.
+  /// \param{in} model_path The path to the existing ONNX model to augment.
+  /// \param{in} options The OrtSessionOptions instance.
+  /// \param{out} out The created OrtSession instance.
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<ffi.Char> model_path,
+                  ffi.Pointer<OrtSessionOptions> options,
+                  ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
+      CreateModelEditorSession;
+
+  /// \brief Create an OrtSession to augment an existing model.
+  ///
+  /// Create an OrtSession with an existing model that will be augmented with additional nodes and initializers.
+  /// Nodes can be added before or after the existing nodes in the model. ONNX Runtime will connect the nodes when the
+  /// model is finalized.
+  ///
+  /// To add nodes and initializers to the existing model, first create an OrtModel using CreateModel.
+  /// Add nodes and initializers to the OrtModel using AddNodeToGraph and AddInitializerToGraph.
+  /// Graph inputs/outputs should be updated with SetGraphInputs and SetGraphOutputs as needed to reflect changes made
+  /// by the new nodes. The list of graph inputs/outputs should be for the overall model and not just the new nodes.
+  ///
+  /// Add the new information from the OrtModel to the original model using ApplyModelToSession, and prepare the
+  /// session for inferencing by calling FinalizeModelEditorSession.
+  ///
+  /// \param{in} env The OrtEnv instance.
+  /// \param{in} model_data The model data for the existing model to augment.
+  /// \param{in} model_data_length The length of the model data.
+  /// \param{in} options The OrtSessionOptions instance.
+  /// \param{out} out The created OrtSession instance.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<ffi.Void> model_data,
+                  ffi.Size model_data_length,
+                  ffi.Pointer<OrtSessionOptions> options,
+                  ffi.Pointer<ffi.Pointer<OrtSession>> out)>>
+      CreateModelEditorSessionFromArray;
+
+  /// \brief Query the session for the opset version of a domain.
+  ///
+  /// When using the Model Editor API to augment a model, any new nodes must conform to the opset version of the
+  /// original model. To do that the user must be able to discover that opset version.
+  /// Returns an error if the domain is not used in the model.
+  ///
+  /// \param[in] session OrtSession to query
+  /// \param[in] domain Domain to query. The ONNX domain is an empty string.
+  /// \param[out] opset The opset version of the domain.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtSession> session,
+              ffi.Pointer<ffi.Char> domain,
+              ffi.Pointer<ffi.Int> opset)>> SessionGetOpsetForDomain;
+
+  /// \brief Apply changes to augment the ONNX model in a session created using CreateModelEditorSession[FromArray]
+  ///
+  /// Adds new nodes and updates graph inputs/outputs using `model` to augment the original ONNX model in the session.
+  /// All changes will be validated.
+  /// Call FinalizeModelEditorSession to prepare the session for inferencing.
+  ///
+  /// Existing input/outputs will only be updated if the OrtGraph inputs/outputs are set in the OrtModel.
+  /// i.e. you don't need to call SetGraphInputs/SetGraphOutputs if they are unchanged.
+  ///
+  /// ReleaseOrtModel must be called to free the OrtModel after it is applied to the session.
+  ///
+  /// \param[in] session OrtSession to update. Session must have been created using CreateModelEditorSession[FromArray].
+  /// \param[in] model OrtModel containing new nodes, new initializers, and updated graph input and/or output info.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(ffi.Pointer<OrtSession> session,
+              ffi.Pointer<OrtModel> model)>> ApplyModelToModelEditorSession;
+
+  /// \brief Finalize the Model Editor session that was created using CreateModelEditorSession[FromArray].
+  ///
+  /// Finalize the Model Editor session that augmented an ONNX model by adding new nodes.
+  /// This will run optimizers and prepare the session for inferencing.
+  ///
+  /// \param[in] session OrtSession to finalize. Session must have been created using CreateModelEditorSession[FromArray].
+  /// \param[in] options OrtSessionOptions to use for the session.
+  /// \param[in] prepacked_weights_container Optional OrtPrepackedWeightsContainer to use for the session.
+  /// Set to nullptr if not used.
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtSession> session,
+              ffi.Pointer<OrtSessionOptions> options,
+              ffi.Pointer<OrtPrepackedWeightsContainer>
+                  prepacked_weights_container)>> FinalizeModelEditorSession;
+}
+
+/// \brief The OrtCompileApi struct provides functions to compile ONNX models.
+///
+/// Execution providers that support compilation fuse a subgraph into an EPContext node that wraps a provider-specific
+/// binary representation of the subgraph.
+/// For more details about the EPContext design, refer to:
+/// \htmlonly
+/// <a href="https://onnxruntime.ai/docs/execution-providers/EP-Context-Design.html">EPContext design document.</a>
+/// \endhtmlonly
+///
+/// Example (error handling not shown):
+/// OrtStatus* status = NULL;
+/// OrtCompileApi* compile_api = ort_api->GetCompileApi();
+/// OrtModelCompilationOptions* compile_options = NULL;
+///
+/// status = compile_api->CreateModelCompilationOptionsFromSessionOptions(env, session_options, &compile_options);
+/// status = compile_api->ModelCompilationOptions_SetInputModelPath(compile_options, ORT_TSTR("model.onnx"));
+/// status = compile_api->ModelCompilationOptions_SetOutputModelPath(compile_options, ORT_TSTR("model.compiled.onnx"));
+/// status = compile_api->CompileModel(env, compile_options);
+/// compile_api->ReleaseModelCompilationOptions(compile_options);
+///
+/// \since Version 1.22.
+class OrtCompileApi extends ffi.Struct {
+  /// @}
+  /// \name OrtModelCompilationOptions
+  /// @{
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<OrtModelCompilationOptions> input)>>
+      ReleaseModelCompilationOptions;
+
+  /// \brief Creates an OrtModelCompilationOptions object from an existing OrtSessionOptions object.
+  ///
+  /// An OrtModelCompilationOptions object contains the settings used to generate a compiled ONNX model.
+  /// The OrtSessionOptions object has the execution providers with which the model will be compiled.
+  ///
+  /// ReleaseOrtModelCompilationsOptions must be called to free the OrtModelCompilationOptions after calling
+  /// CompileModel.
+  ///
+  /// \param[in] env OrtEnv object.
+  /// \param[in] session_options The OrtSessionOptions instance from which to create the OrtModelCompilationOptions.
+  /// \param[out] out The created OrtModelCompilationOptions instance.
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<OrtSessionOptions> session_options,
+                  ffi.Pointer<ffi.Pointer<OrtModelCompilationOptions>> out)>>
+      CreateModelCompilationOptionsFromSessionOptions;
+
+  /// \brief Sets the file path to the input ONNX model to compile.
+  ///
+  /// The input model's location (e.g., file path or memory buffer) must be set with either
+  /// ModelCompilationOptions_SetInputModelPath or ModelCompilationOptions_SetInputModelFromBuffer.
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] input_model_path Null terminated string of the path (wchar on Windows, char otherwise).
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Pointer<ffi.Char> input_model_path)>>
+      ModelCompilationOptions_SetInputModelPath;
+
+  /// \brief Sets the buffer that stores the bytes of the loaded ONNX model to compile.
+  ///
+  /// The input model's location (e.g., file path or memory buffer) must be set with either
+  /// ModelCompilationOptions_SetInputModelPath or ModelCompilationOptions_SetInputModelFromBuffer.
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] input_model_data Buffer containing the loaded ONNX model bytes.
+  /// \param[in] input_model_data_size The number of bytes in the `input_model_data` buffer.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Pointer<ffi.Void> input_model_data,
+                  ffi.Size input_model_data_size)>>
+      ModelCompilationOptions_SetInputModelFromBuffer;
+
+  /// \brief Sets the file path for the output ONNX model generated by CompileModel.
+  ///
+  /// The output model's location (e.g., file path or memory buffer) can be set with either
+  /// ModelCompilationOptions_SetOutputModelPath or ModelCompilationOptions_SetOutputModelBuffer.
+  ///
+  /// If the output model's location is not set, ONNX Runtime will generate an output file with a path based on
+  /// the input model's file path. Examples:
+  /// /Path/my_model.onnx -> /Path/my_model_ctx.onnx
+  /// /Path/my_model -> /Path/my_model_ctx.onnx
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] output_model_path Null terminated string of the path (wchar on Windows, char otherwise).
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Pointer<ffi.Char> output_model_path)>>
+      ModelCompilationOptions_SetOutputModelPath;
+
+  /// \brief Optionally sets the file that should store external initializers for the compiled ONNX model.
+  /// If not set, initializers are stored within the model.
+  ///
+  /// Only initializers for nodes that were not compiled are stored in the external initializers file.
+  /// Compiled nodes contain their initializer data within the `ep_cache_context` attribute of EPContext nodes.
+  /// Refer to ModelCompilationOptions_SetEpContextEmbedMode.
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] external_initializers_file_path Null terminated string of the path to the file.
+  /// \param[in] external_initializers_size_threshold Initializers larger than this threshold are stored in the file.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Pointer<ffi.Char> external_initializers_file_path,
+                  ffi.Size external_initializers_size_threshold)>>
+      ModelCompilationOptions_SetOutputModelExternalInitializersFile;
+
+  /// \brief Configures model compilation to store the output compiled ONNX model in a buffer.
+  ///
+  /// The caller passes an OrtAllocator that ONNX Runtime uses to allocate memory for the buffer.
+  ///
+  /// The output model's location (e.g., file path or memory buffer) can be set with either
+  /// ModelCompilationOptions_SetOutputModelPath or ModelCompilationOptions_SetOutputModelBuffer.
+  ///
+  /// If the output model's location is not set, ONNX Runtime will generate an output file with a path based on
+  /// the input model's file path. Examples:
+  /// /Path/my_model.onnx -> /Path/my_model_ctx.onnx
+  /// /Path/my_model -> /Path/my_model_ctx.onnx
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] allocator The allocator used to allocate the buffer for the compiled model.
+  /// \param[out] output_model_buffer_ptr Pointer to the buffer that stores the compiled model.
+  /// \param[out] output_model_buffer_size_ptr Pointer set to the size of output model in bytes.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Pointer<OrtAllocator> allocator,
+                  ffi.Pointer<ffi.Pointer<ffi.Void>> output_model_buffer_ptr,
+                  ffi.Pointer<ffi.Size> output_model_buffer_size_ptr)>>
+      ModelCompilationOptions_SetOutputModelBuffer;
+
+  /// \brief Enables or disables the embedding of EPContext binary data into the `ep_cache_context` attribute
+  /// of EPContext nodes. Defaults to false.
+  ///
+  /// If enabled, the `ep_cache_context` attribute of EPContext nodes will store the context binary data, which may
+  /// include weights for compiled subgraphs.
+  ///
+  /// If disabled, the `ep_cache_context` attribute of EPContext nodes will contain the path to the file containing the
+  /// context binary data. The path is set by the execution provider creating the EPContext node.
+  ///
+  /// More details relate to EPContext design refers to:
+  /// \htmlonly
+  /// <a href="https://onnxruntime.ai/docs/execution-providers/EP-Context-Design.html">EPContext design document.</a>
+  /// \endhtmlonly
+  ///
+  /// \param[in] model_compile_options The OrtModelCompilationOptions instance.
+  /// \param[in] embed_ep_context_in_model True to embed EPContext binary data into the EPContext node
+  /// `ep_cache_context` attributes.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(
+                  ffi.Pointer<OrtModelCompilationOptions> model_compile_options,
+                  ffi.Bool embed_ep_context_in_model)>>
+      ModelCompilationOptions_SetEpContextEmbedMode;
+
+  /// \brief Compiles an input ONNX model with the given compilation options.
+  ///
+  /// \param[in] env OrtEnv object.
+  /// \param[in] model_options The compilation options that defines compilation options for a model.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              OrtStatusPtr Function(ffi.Pointer<OrtEnv> env,
+                  ffi.Pointer<OrtModelCompilationOptions> model_options)>>
+      CompileModel;
+}
+
+/// \brief These are the default EP selection policies used by ORT when doing automatic EP selection.
+abstract class OrtExecutionProviderDevicePolicy {
+  static const int OrtExecutionProviderDevicePolicy_DEFAULT = 0;
+  static const int OrtExecutionProviderDevicePolicy_PREFER_CPU = 1;
+  static const int OrtExecutionProviderDevicePolicy_PREFER_NPU = 2;
+  static const int OrtExecutionProviderDevicePolicy_PREFER_GPU = 3;
+  static const int OrtExecutionProviderDevicePolicy_MAX_PERFORMANCE = 4;
+  static const int OrtExecutionProviderDevicePolicy_MAX_EFFICIENCY = 5;
+  static const int OrtExecutionProviderDevicePolicy_MIN_OVERALL_POWER = 6;
+}
+
+/// \brief Delegate to allow providing custom OrtEpDevice selection logic
+///
+/// This delegate is called by the EP selection code to allow the user to provide custom device selection logic.
+/// The user can use this to select OrtEpDevice instances from the list of available devices.
+///
+/// \param ep_devices The list of available devices.
+/// \param num_devices The number of available devices.
+/// \param model_metadata The model metadata.
+/// \param runtime_metadata The runtime metadata. May be nullptr.
+/// \param selected Pre-allocated array to populate with selected OrtEpDevice pointers from ep_devices.
+/// \param max_ep_devices The maximum number of devices that can be selected in the pre-allocated array.
+/// Currently the maximum is 8.
+/// \param num_ep_devices The number of selected devices.
+/// \param state Opaque pointer. Required to use the delegate from other languages like C# and python.
+///
+/// \return OrtStatus* Selection status. Return nullptr on success.
+/// Use CreateStatus to provide error info. Use ORT_FAIL as the error code.
+/// ORT will release the OrtStatus* if not null.
+typedef EpSelectionDelegate = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Pointer<OrtStatus> Function(
+            ffi.Pointer<ffi.Pointer<OrtEpDevice>> ep_devices,
+            ffi.Size num_devices,
+            ffi.Pointer<OrtKeyValuePairs> model_metadata,
+            ffi.Pointer<OrtKeyValuePairs> runtime_metadata,
+            ffi.Pointer<ffi.Pointer<OrtEpDevice>> selected,
+            ffi.Size max_selected,
+            ffi.Pointer<ffi.Size> num_selected,
+            ffi.Pointer<ffi.Void> state)>>;
+
+abstract class OrtHardwareDeviceType {
+  static const int OrtHardwareDeviceType_CPU = 0;
+  static const int OrtHardwareDeviceType_GPU = 1;
+  static const int OrtHardwareDeviceType_NPU = 2;
+}
+
+class OrtEpApi extends ffi.Struct {
+  /// \brief Create an OrtEpDevice for the EP and an OrtHardwareDevice.
+  /// \param[in] ep_factory Execution provider factory that is creating the instance.
+  /// \param[in] hardware_device Hardware device that the EP can utilize.
+  /// \param[in] ep_metadata Optional OrtKeyValuePairs instance for execution provider metadata that may be used
+  /// during execution provider selection and passed to CreateEp.
+  /// ep_device will copy this instance and the user should call ReleaseKeyValuePairs.
+  /// \param[in] ep_options  Optional OrtKeyValuePairs instance for execution provider options that will be added
+  /// to the Session configuration options if the execution provider is selected.
+  /// ep_device will copy this instance and the user should call ReleaseKeyValuePairs.
+  /// \param ep_device OrtExecutionDevice that is created.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          OrtStatusPtr Function(
+              ffi.Pointer<OrtEpFactory> ep_factory,
+              ffi.Pointer<OrtHardwareDevice> hardware_device,
+              ffi.Pointer<OrtKeyValuePairs> ep_metadata,
+              ffi.Pointer<OrtKeyValuePairs> ep_options,
+              ffi.Pointer<ffi.Pointer<OrtEpDevice>> ep_device)>> CreateEpDevice;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<OrtEpDevice> input)>>
+      ReleaseEpDevice;
+}
+
+/// \brief The OrtEpFactory provides functions to create and manage execution providers.
+/// \since Version 1.22.
+class OrtEpFactory extends ffi.Struct {
+  /// \brief The ONNX Runtime version the execution provider was compiled with.
+  ///
+  /// Implementation should set to ORT_API_VERSION.
+  /// ORT will use this to ensure it does not call functions that were not available when the library was compiled.
+  ///
+  /// \since Version 1.22.
+  @ffi.Uint32()
+  external int ort_version_supported;
+
+  /// \brief Get the name the of the execution provider that the factory creates.
+  ///
+  /// \param[in] this_ptr The OrtEpFactory instance.
+  /// \return The name of the execution provider the factory creates.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<OrtEpFactory> this_ptr)>> GetName;
+
+  /// return EP vendor
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<OrtEpFactory> this_ptr)>> GetVendor;
+
+  /// \brief Get information from the execution provider if it supports the OrtHardwareDevice.
+  ///
+  /// \param[in] this_ptr The OrtEpFactory instance.
+  /// Non-const as the factory is passed through to the CreateEp call via the OrtEpDevice.
+  /// \param[in] devices The OrtHardwareDevice instances that are available.
+  /// \param[in] num_devices The number of OrtHardwareDevice instances.
+  /// \param[out] ep_devices OrtEpDevice instances for each OrtHardwareDevice that the EP can use.
+  /// The implementation should call OrtEpApi::CreateEpDevice to create, and add the OrtEpDevice
+  /// instances to this pre-allocated array. ORT will take ownership of the values returned.
+  /// i.e. usage is `ep_devices[0] = <ptr to OrtEpDevice created with OrtEpApi::CreateEpDevice>;`
+  /// \param[in] max_ep_devices The maximum number of OrtEpDevices that can be added to ep_devices.
+  /// Current default is 8. This can be increased if needed.
+  /// \param[out] num_ep_devices The number of EP devices added to ep_devices.
+  /// \return true if the factory can create an execution provider that uses `device`.
+  ///
+  /// \note ORT will take ownership or ep_metadata and/or ep_options if they are not null.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtStatus> Function(
+              ffi.Pointer<OrtEpFactory> this_ptr,
+              ffi.Pointer<ffi.Pointer<OrtHardwareDevice>> devices,
+              ffi.Size num_devices,
+              ffi.Pointer<ffi.Pointer<OrtEpDevice>> ep_devices,
+              ffi.Size max_ep_devices,
+              ffi.Pointer<ffi.Size> num_ep_devices)>> GetSupportedDevices;
+
+  /// \brief Function to create an OrtEp instance for use in a Session.
+  ///
+  /// ORT will call ReleaseEp to release the instance when it is no longer needed.
+  ///
+  /// \param[in] this_ptr The OrtEpFactory instance.
+  /// \param[in] devices The OrtHardwareDevice instances that the execution provider was selected to use.
+  /// \param[in] ep_metadata_pairs Execution provider metadata that was provided to OrtEpApi::CreateEpDevice, for each
+  /// device.
+  /// \param[in] num_devices The number of devices the execution provider was selected for.
+  /// \param[in] session_options The OrtSessionOptions instance that contains the configuration options for the
+  /// session. This will include ep_options from GetSupportedDevices as well as any
+  /// user provided overrides.
+  /// Execution provider options will have been added with a prefix of 'ep.<ep name>.'.
+  /// The OrtSessionOptions instance will NOT be valid after this call and should not be
+  /// stored for later use.
+  /// \param[in] logger The OrtLogger instance for the session that the execution provider should use for logging.
+  /// \param[out] ep The OrtEp instance created by the factory.
+  ///
+  /// \snippet{doc} snippets.dox OrtStatus Return Value
+  ///
+  /// \since Version <coming soon>. This is a placeholder.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<OrtStatus> Function(
+              ffi.Pointer<OrtEpFactory> this_ptr,
+              ffi.Pointer<ffi.Pointer<OrtHardwareDevice>> devices,
+              ffi.Pointer<ffi.Pointer<OrtKeyValuePairs>> ep_metadata_pairs,
+              ffi.Size num_devices,
+              ffi.Pointer<OrtSessionOptions> session_options,
+              ffi.Pointer<OrtLogger> logger,
+              ffi.Pointer<ffi.Pointer<OrtEp>> ep)>> CreateEp;
+
+  /// \brief Release the OrtEp instance.
+  ///
+  /// \param[in] this_ptr The OrtEpFactory instance.
+  /// \param[in] ep The OrtEp instance to release.
+  ///
+  /// \since Version <coming soon>. This is a placeholder.
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<OrtEpFactory> this_ptr, ffi.Pointer<OrtEp> ep)>>
+      ReleaseEp;
+}
+
+/// \brief The OrtEp struct provides functions to implement for an execution provider.
+/// \since Version 1.22.
+class OrtEp extends ffi.Struct {
+  /// \brief The ONNX Runtime version the execution provider was compiled with.
+  ///
+  /// Implementation should set to ORT_API_VERSION.
+  /// ORT will use this to ensure it does not call functions that were not available when the library was compiled.
+  ///
+  /// \since Version 1.22.
+  @ffi.Uint32()
+  external int ort_version_supported;
+
+  /// \brief Get the execution provider name.
+  ///
+  /// \param[in] this_ptr The OrtEp instance.
+  /// \return The execution provider name.
+  ///
+  /// \note Returned string is owned by ORT and valid until UnregisterExecutionProviderLibrary is called.
+  ///
+  /// \since Version 1.22.
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<OrtEp> this_ptr)>> GetName;
+}
 
 /// Specifies some characteristics of inputs/outputs of custom ops:
 /// Specify if the inputs/outputs are one of:
@@ -3022,9 +7220,15 @@ abstract class COREMLFlags {
   /// Create an MLProgram. By default it will create a NeuralNetwork model. Requires Core ML 5 or later.
   static const int COREML_FLAG_CREATE_MLPROGRAM = 16;
 
+  /// https://developer.apple.com/documentation/coreml/mlcomputeunits?language=objc
+  /// there are four compute units:
+  /// MLComputeUnitsCPUAndNeuralEngine|MLComputeUnitsCPUAndGPU|MLComputeUnitsCPUOnly|MLComputeUnitsAll
+  /// different CU will have different performance and power consumption
+  static const int COREML_FLAG_USE_CPU_AND_GPU = 32;
+
   /// Keep COREML_FLAG_LAST at the end of the enum definition
   /// And assign the last COREMLFlag to it
-  static const int COREML_FLAG_LAST = 16;
+  static const int COREML_FLAG_LAST = 32;
 }
 
 /// NNAPIFlags are bool options we want to set for NNAPI EP
@@ -3073,9 +7277,9 @@ abstract class NNAPIFlags {
   static const int NNAPI_FLAG_LAST = 8;
 }
 
-const int ORT_API_VERSION = 19;
+const int ORT_API_VERSION = 22;
 
 const String ORT_FILE =
-    '/var/folders/5p/j5xk5nc11xjd38y54vmyxp1h0000gq/T/auIcO7/temp_for_macros.hpp';
+    '/var/folders/t8/tl2p92cx6_3c9718ldx__lg00000gn/T/r294Mi/temp_for_macros.hpp';
 
 const int MAX_CUSTOM_OP_END_VER = 2147483647;
