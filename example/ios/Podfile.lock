@@ -2,12 +2,12 @@ PODS:
   - Flutter (1.0.0)
   - onnxruntime (0.0.1):
     - Flutter
-    - onnxruntime-objc (= 1.19.2)
-  - onnxruntime-c (1.19.2)
-  - onnxruntime-objc (1.19.2):
-    - onnxruntime-objc/Core (= 1.19.2)
-  - onnxruntime-objc/Core (1.19.2):
-    - onnxruntime-c (= 1.19.2)
+    - onnxruntime-objc (= 1.22.2)
+  - onnxruntime-c (1.22.2)
+  - onnxruntime-objc (1.22.2):
+    - onnxruntime-objc/Core (= 1.22.2)
+  - onnxruntime-objc/Core (1.22.2):
+    - onnxruntime-c (= 1.22.2)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
